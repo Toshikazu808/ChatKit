@@ -3,7 +3,7 @@
 
 import SwiftUI
 
-public struct Movie {
+public struct CKMovie {
     let localUrl: URL
     let dateGenerated: Date
     var compressedUrl: URL?
@@ -11,7 +11,7 @@ public struct Movie {
 
 #if canImport(SwiftUI)
 @available(iOS 16.0, macOS 13.0, *)
-extension Movie: Transferable {
+extension CKMovie: Transferable {
     public static var transferRepresentation: some TransferRepresentation {
         FileRepresentation(contentType: .movie) { movie in
             SentTransferredFile(movie.localUrl)
@@ -21,7 +21,7 @@ extension Movie: Transferable {
                 try FileManager.default.removeItem(at: copy)
             }
             try FileManager.default.copyItem(at: received.file, to: copy)
-            return Movie(localUrl: copy, dateGenerated: .now)
+            return CKMovie(localUrl: copy, dateGenerated: .now)
         }
     }
 }
