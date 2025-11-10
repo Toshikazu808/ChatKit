@@ -14,9 +14,9 @@ public struct CKAVSendable: Equatable, Hashable {
         movie?.dateGenerated ?? date
     }
     public let image: UIImage
-    public var movie: Movie?
+    public var movie: CKMovie?
     
-    public init(image: UIImage?, movie: Movie?) {
+    public init(image: UIImage?, movie: CKMovie?) {
         if let image {
             self.image = image
         } else {
