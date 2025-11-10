@@ -22,6 +22,11 @@ public struct CKMediaUrl: Hashable {
         self.videoUrl = videoUrl
     }
     
+    public init(data: [String: Any]) {
+        self.imgUrl = data[DBKeys.imgUrl] as? String ?? ""
+        self.videoUrl = data[DBKeys.videoUrl] as? String ?? ""
+    }
+    
     public init(cachedMediaUrl: CKCachedMediaUrl) {
         self.imgUrl = cachedMediaUrl.imgUrl
         self.videoUrl = cachedMediaUrl.videoUrl
@@ -42,15 +47,15 @@ public struct CKMediaUrl: Hashable {
 @Model public final class CKCachedMediaUrl {
     public var cachedMessage: CKCachedMessage?
     
-    private(set) var imgUrl: String
-    private(set) var videoUrl: String
+    public private(set) var imgUrl: String
+    public private(set) var videoUrl: String
     
-    init(imgUrl: String, videoUrl: String) {
+    public init(imgUrl: String, videoUrl: String) {
         self.imgUrl = imgUrl
         self.videoUrl = videoUrl
     }
     
-    init(mediaUrl: CKMediaUrl) {
+    public init(mediaUrl: CKMediaUrl) {
         self.imgUrl = mediaUrl.imgUrl
         self.videoUrl = mediaUrl.videoUrl
     }
