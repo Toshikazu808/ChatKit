@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct AVSendable: Equatable, Hashable {
+public struct CKAVSendable: Equatable, Hashable {
     public let id = UUID().uuidString
     public let date: Date = .now
     public var dateGenerated: Date {
@@ -25,11 +25,11 @@ public struct AVSendable: Equatable, Hashable {
         self.movie = movie
     }
     
-    public static func empty() -> AVSendable {
-        return AVSendable(image: nil, movie: nil)
+    public static func empty() -> CKAVSendable {
+        return CKAVSendable(image: nil, movie: nil)
     }
     
-    public static func == (lhs: AVSendable, rhs: AVSendable) -> Bool {
+    public static func == (lhs: CKAVSendable, rhs: CKAVSendable) -> Bool {
         return lhs.id == rhs.id
     }
     
