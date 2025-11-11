@@ -10,6 +10,7 @@ import Foundation
 public enum Errors: LocalizedError {
     case noSelf
     case noBundleId
+    case noDelegate(String, String)
     case keysNotFound(String, [String])
     case videoTrackError
     case privacyNotAuthorized
@@ -22,6 +23,8 @@ public enum Errors: LocalizedError {
             "Reference to self has been deinitialized."
         case .noBundleId:
             "Unable to get Bundle.main.bundleIdentifier."
+        case .noDelegate(let object, let delegate):
+            "Object \(object) needs a delegate of type \(delegate)"
         case .keysNotFound(let object, let keys):
             "Dictionary keys for \(object) not found: \(keys.joined(separator: ", "))"
         case .videoTrackError:
