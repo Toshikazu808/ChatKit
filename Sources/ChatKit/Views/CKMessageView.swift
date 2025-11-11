@@ -9,14 +9,17 @@ import SwiftUI
 
 struct CKMessageView: View {
     private let message: CKMessage
-    private let isFromUser: Bool
+    private let userId: String
     private let screenWidth: CGFloat
     let onTapMessage: (CKMessage) -> Void
     let onTapMedia: (CKMessage, CKMediaUrl) -> Void
+    public var isFromUser: Bool {
+        return message.senderId == userId
+    }
     
-    init(message: CKMessage, isFromUser: Bool, screenWidth: CGFloat, onTapMessage: @escaping (CKMessage) -> Void, onTapMedia: @escaping (CKMessage, CKMediaUrl) -> Void) {
+    init(message: CKMessage, userId: String, screenWidth: CGFloat, onTapMessage: @escaping (CKMessage) -> Void, onTapMedia: @escaping (CKMessage, CKMediaUrl) -> Void) {
         self.message = message
-        self.isFromUser = isFromUser
+        self.userId = userId
         self.screenWidth = screenWidth
         self.onTapMessage = onTapMessage
         self.onTapMedia = onTapMedia

@@ -17,6 +17,7 @@ import PhotosUI
 @Observable @MainActor public final class CKChatVM {
     public weak var apiDelegate: (any ChatVMApiDelegate)?
     
+    public let userId: String
     public let db: any CKMessageCacherProtocol
     public let filesManager: any CKFilesManageable
     public let speechManager: any CKSpeechManageable
@@ -44,7 +45,8 @@ import PhotosUI
     public internal(set) var displayError = false
     public internal(set) var error = ""
     
-    public init(db: any CKMessageCacherProtocol, filesManager: any CKFilesManageable = CKFilesManager(), speechManager: any CKSpeechManageable = CKSpeechManager()) {
+    public init(userId: String, db: any CKMessageCacherProtocol, filesManager: any CKFilesManageable = CKFilesManager(), speechManager: any CKSpeechManageable = CKSpeechManager()) {
+        self.userId = userId
         self.db = db
         self.filesManager = filesManager
         self.speechManager = speechManager
