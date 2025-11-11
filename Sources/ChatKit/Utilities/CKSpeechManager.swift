@@ -62,21 +62,9 @@ import Speech
         let granted = await AVAudioApplication.requestRecordPermission()
         guard granted else { throw Errors.micNotAuthorized }
         isAuthorized = await SFSpeechRecognizer.hasAuthorization()
-        guard isAuthorized else { throw Errors.dictationNotAuthorized }
-        
-        // TODO: - Fix custom language model
-//        Task.detached { [weak self] in
-//            guard let self else { return }
-//            do {
-//                try await configureLanguageModel()
-//                isAuthorized = true
-//                completion()
-//            } catch {
-//                print(error)
-//                isAuthorized = true
-//                completion()
-//            }
-//        }
+        if !isAuthorized {
+            throw Errors.dictationNotAuthorized
+        }
     }
     
     private func configureLanguageModel() async throws {
