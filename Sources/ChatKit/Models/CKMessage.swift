@@ -18,7 +18,7 @@ public struct CKMessage: Comparable, Identifiable, Hashable {
     public var mediaUrls: [CKMediaUrl] = []
     public let expToken: CKExpToken
     
-    public enum DBKeys {
+    public enum Keys {
         static let id = "id"
         static let chatGroupId = "chatGroupId"
         static let date = "date"
@@ -42,47 +42,47 @@ public struct CKMessage: Comparable, Identifiable, Hashable {
     
     public init(data: [String: Any]) throws {
         var missing: [String] = []
-        if let id = data[DBKeys.id] as? String {
+        if let id = data[Keys.id] as? String {
             self.id = id
         } else {
             self.id = ""
-            missing.append(DBKeys.id)
+            missing.append(Keys.id)
         }
-        if let chatGroupId = data[DBKeys.chatGroupId] as? String {
+        if let chatGroupId = data[Keys.chatGroupId] as? String {
             self.chatGroupId = chatGroupId
         } else {
             self.chatGroupId = ""
-            missing.append(DBKeys.chatGroupId)
+            missing.append(Keys.chatGroupId)
         }
-        if let date = data[DBKeys.date] as? Date {
+        if let date = data[Keys.date] as? Date {
             self.date = date
         } else {
             self.date = .epochStart
-            missing.append(DBKeys.date)
+            missing.append(Keys.date)
         }
-        if let senderId = data[DBKeys.senderId] as? String {
+        if let senderId = data[Keys.senderId] as? String {
             self.senderId = senderId
         } else {
             self.senderId = ""
-            missing.append(DBKeys.senderId)
+            missing.append(Keys.senderId)
         }
-        if let senderName = data[DBKeys.senderName] as? String {
+        if let senderName = data[Keys.senderName] as? String {
             self.senderName = senderName
         } else {
             self.senderName = ""
-            missing.append(DBKeys.senderName)
+            missing.append(Keys.senderName)
         }
-        if let message = data[DBKeys.message] as? String {
+        if let message = data[Keys.message] as? String {
             self.message = message
         } else {
             self.message = ""
         }
-        if let media = data[DBKeys.mediaUrls] as? [[String: Any]] {
+        if let media = data[Keys.mediaUrls] as? [[String: Any]] {
             self.mediaUrls = media.map({ CKMediaUrl(data: $0) })
         } else {
             self.mediaUrls = []
         }
-        if let expToken = data[DBKeys.expToken] as? CKExpToken {
+        if let expToken = data[Keys.expToken] as? CKExpToken {
             self.expToken = expToken
         } else {
             self.expToken = .empty()
@@ -105,12 +105,12 @@ public struct CKMessage: Comparable, Identifiable, Hashable {
     
     public func toObject() -> [String: Any] {
         return [
-            DBKeys.id: id,
-            DBKeys.chatGroupId: chatGroupId,
-            DBKeys.senderId: senderId,
-            DBKeys.senderName: senderName,
-            DBKeys.message: message,
-            DBKeys.mediaUrls: mediaUrls.map({ $0.toObject() }),
+            Keys.id: id,
+            Keys.chatGroupId: chatGroupId,
+            Keys.senderId: senderId,
+            Keys.senderName: senderName,
+            Keys.message: message,
+            Keys.mediaUrls: mediaUrls.map({ $0.toObject() }),
         ]
     }
     
