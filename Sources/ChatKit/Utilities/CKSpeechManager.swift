@@ -22,6 +22,7 @@ import Speech
     func didUpdate(_ transcript: String)
 }
 
+// TODO: - Refactor to use new SpeechAnalyzer: https://developer.apple.com/videos/play/wwdc2025/277/
 @MainActor public final class CKSpeechManager: NSObject, CKSpeechManageable {
     public weak var delegate: (any CKSpeechManagerDelegate)?
     
