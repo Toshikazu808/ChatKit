@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftData
 
 public struct CKExpToken {
     public let jwt: String
@@ -94,7 +95,33 @@ public struct CKExpToken {
         }
     }
     
+    public init(_ cachedExpToken: CKCachedExpToken) {
+        self.jwt = cachedExpToken.jwt
+        self.tpc = cachedExpToken.tpc
+        self.expiration = cachedExpToken.expiration
+    }
+    
     static func empty() -> CKExpToken {
         return CKExpToken(jwt: "", tpc: "")
+    }
+}
+
+@Model public final class CKCachedExpToken {
+    public var cachedMessage: CKCachedMessage?
+    
+    public private(set) var jwt: String
+    public private(set) var tpc: String
+    public private(set) var expiration: Date
+    
+    public init(jwt: String, tpc: String, expiration: Date) {
+        self.jwt = jwt
+        self.tpc = tpc
+        self.expiration = expiration
+    }
+    
+    public init(_ expToken: CKExpToken) {
+        self.jwt = expToken.jwt
+        self.tpc = expToken.tpc
+        self.expiration = expToken.expiration
     }
 }
