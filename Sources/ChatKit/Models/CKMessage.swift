@@ -48,7 +48,8 @@ public struct CKMessage: Comparable, Identifiable, Hashable {
         if let id = data[DBKeys.id] as? String {
             self.id = id
         } else {
-            throw NSError(domain: "CKMessage", code: 404)
+            self.id = ""
+            missing.append(DBKeys.id)
         }
         if let chatGroupId = data[DBKeys.chatGroupId] as? String {
             self.chatGroupId = chatGroupId
@@ -95,7 +96,7 @@ public struct CKMessage: Comparable, Identifiable, Hashable {
             self.tpc = ""
         }
         if !missing.isEmpty {
-            throw NSError(domain: "CKMessage", code: 404)
+            throw Errors.keysNotFound("CKMessage", missing)
         }
     }
     

@@ -9,14 +9,14 @@ import Foundation
 
 public enum Errors: LocalizedError {
     case noSelf
-    case keyNotFound(String, [String])
+    case keysNotFound(String, [String])
     case videoTrackError
     
     public var errorDescription: String? {
         switch self {
         case .noSelf:
             "Reference to self has been deinitialized."
-        case .keyNotFound(let object, let keys):
+        case .keysNotFound(let object, let keys):
             "Dictionary keys for \(object) not found: \(keys.joined(separator: ", "))"
         case .videoTrackError:
             "Unable to load video track."
