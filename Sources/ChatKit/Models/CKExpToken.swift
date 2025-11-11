@@ -22,7 +22,7 @@ public struct CKExpToken {
         return expiration < now
     }
     
-    enum Keys {
+    public enum Keys {
         static let jwt = "jwt"
         static let tpc = "tpc"
         static let expiration = "expiration"
@@ -101,7 +101,7 @@ public struct CKExpToken {
         self.expiration = cachedExpToken.expiration
     }
     
-    static func empty() -> CKExpToken {
+    public static func empty() -> CKExpToken {
         return CKExpToken(jwt: "", tpc: "")
     }
 }

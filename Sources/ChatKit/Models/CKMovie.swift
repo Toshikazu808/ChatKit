@@ -4,9 +4,9 @@
 import SwiftUI
 
 public struct CKMovie {
-    let localUrl: URL
-    let dateGenerated: Date
-    var compressedUrl: URL?
+    public let localUrl: URL
+    public let dateGenerated: Date
+    public var compressedUrl: URL?
 }
 
 #if canImport(SwiftUI)

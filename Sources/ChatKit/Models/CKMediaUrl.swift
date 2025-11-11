@@ -12,7 +12,7 @@ public struct CKMediaUrl: Hashable {
     public let imgUrl: String
     public let videoUrl: String
     
-    enum DBKeys {
+    public enum DBKeys {
         static let imgUrl = "imgUrl"
         static let videoUrl = "videoUrl"
     }
