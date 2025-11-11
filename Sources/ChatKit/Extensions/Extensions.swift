@@ -75,3 +75,12 @@ extension Date {
         return lhs <= rhs
     }
 }
+
+extension String {
+    mutating func completeSentence() {
+        if hasSuffix(".") || hasSuffix("?") || hasSuffix("!") {
+            return
+        }
+        self += "."
+    }
+}
