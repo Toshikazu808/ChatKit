@@ -31,16 +31,16 @@ public struct CKMessage: Comparable, Identifiable, Hashable {
         static let tpc = "tpc"
     }
     
-    public init(id: String, chatGroupId: String, date: Date, senderId: String, senderName: String, message: String, mediaUrls: [CKMediaUrl] = [], jwt: String, tpc: String) {
+    public init(id: String, chatGroupId: String, date: Date, senderId: String, senderName: String, message: String, jwt: String, tpc: String, mediaUrls: [CKMediaUrl] = []) {
         self.id = id
         self.chatGroupId = chatGroupId
         self.date = date
         self.senderId = senderId
         self.senderName = senderName
         self.message = message
-        self.mediaUrls = mediaUrls
         self.jwt = jwt
         self.tpc = tpc
+        self.mediaUrls = mediaUrls
     }
     
     public init(data: [String: Any]) throws {
@@ -132,7 +132,7 @@ public struct CKMessage: Comparable, Identifiable, Hashable {
     }
     
     public static func empty() -> CKMessage {
-        return CKMessage(id: "", chatGroupId: "", date: .now, senderId: "", senderName: "", message: "", mediaUrls: [], jwt: "", tpc: "")
+        return CKMessage(id: "", chatGroupId: "", date: .now, senderId: "", senderName: "", message: "", jwt: "", tpc: "", mediaUrls: [])
     }
     
     public func hash(into hasher: inout Hasher) {
