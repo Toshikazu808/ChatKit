@@ -12,7 +12,7 @@ protocol CKFilesManageable: Sendable {
     func removeCachedMedia(for message: CKMessage)
 }
 
-final class CKFilesManager: @unchecked Sendable {
+final class CKFilesManager: CKFilesManageable, @unchecked Sendable {
     private let manager = FileManager.default
     
     /// Used to temporarily cache images and movies sent to remote storage.
