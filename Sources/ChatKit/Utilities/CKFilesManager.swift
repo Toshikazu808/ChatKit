@@ -7,18 +7,20 @@
 
 import Foundation
 
-protocol CKFilesManageable: Sendable {
+public protocol CKFilesManageable: Sendable {
     @discardableResult func cache(media: [CKAVSendable], chatGroupId: String, docId: String, senderId: String, senderName: String) -> CKMessage
     func removeCachedMedia(for message: CKMessage)
 }
 
-final class CKFilesManager: CKFilesManageable, @unchecked Sendable {
+public final class CKFilesManager: CKFilesManageable, @unchecked Sendable {
     private let manager = FileManager.default
+    
+    public init() {}
     
     /// Used to temporarily cache images and movies sent to remote storage.
     /// Sending files may take a while, but we don't want to delay showing these images to the user after they press the send button.
     /// So solve this, we temporarily cache the image or movie data in the app's `documentsDirectory` and reference these objects when displaying a `DIYMessage`.
-    @discardableResult func cache(media: [CKAVSendable], chatGroupId: String, docId: String, senderId: String, senderName: String) -> CKMessage {
+    @discardableResult public func cache(media: [CKAVSendable], chatGroupId: String, docId: String, senderId: String, senderName: String) -> CKMessage {
         var message = CKMessage(id: docId, chatGroupId: chatGroupId, date: .now, senderId: senderId, senderName: senderName, message: "", jwt: "", tpc: "")
         let docsUrl = URL.documentsDirectory
         for i in 0..<media.count {
@@ -54,7 +56,7 @@ final class CKFilesManager: CKFilesManageable, @unchecked Sendable {
         return message
     }
     
-    func removeCachedMedia(for message: CKMessage) {
+    public func removeCachedMedia(for message: CKMessage) {
         let docsUrl = URL.documentsDirectory
         for i in 0..<message.mediaUrls.count {
             let av = message.mediaUrls[i]

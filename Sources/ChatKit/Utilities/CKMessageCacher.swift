@@ -8,16 +8,16 @@
 import Foundation
 import SwiftData
 
-protocol CKMessageCacherProtocol {
+public protocol CKMessageCacherProtocol {
     func fetchCachedMessage(for chatGroupId: String) -> [CKMessage]
     func cacheMessages(_ messages: [CKMessage]) throws
 }
 
-struct CKMessageCacher: CKMessageCacherProtocol {
+public struct CKMessageCacher: CKMessageCacherProtocol {
     let modelContext: ModelContext
     private let cacheLimit = 100
     
-    func fetchCachedMessage(for chatGroupId: String) -> [CKMessage] {
+    public func fetchCachedMessage(for chatGroupId: String) -> [CKMessage] {
         do {
             let descriptor = FetchDescriptor<CKCachedMessage>(
                 predicate: #Predicate { $0.chatGroupId == chatGroupId },
@@ -29,7 +29,7 @@ struct CKMessageCacher: CKMessageCacherProtocol {
         }
     }
     
-    func cacheMessages(_ messages: [CKMessage]) throws {
+    public func cacheMessages(_ messages: [CKMessage]) throws {
         guard !messages.isEmpty else { return }
         let messages = messages.map({ CKCachedMessage(message: $0) })
         try removeOld(messages)

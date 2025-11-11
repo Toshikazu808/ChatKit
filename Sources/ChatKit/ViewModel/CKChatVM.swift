@@ -14,7 +14,7 @@ import PhotosUI
     func send(senderId: String, senderName: String, text: String, media: [CKAVSendable], chatGroupId: String, docId: String) async throws
 }
 
-@Observable @MainActor final class CKChatVM {
+@Observable @MainActor public final class CKChatVM {
     weak var apiDelegate: (any ChatVMApiDelegate)?
     
     let db: any CKMessageCacherProtocol
@@ -44,7 +44,7 @@ import PhotosUI
     var displayError = false
     var error = ""
     
-    init(db: any CKMessageCacherProtocol, filesManager: any CKFilesManageable = CKFilesManager(), speechManager: any CKSpeechManageable = CKSpeechManager()) {
+    public init(db: any CKMessageCacherProtocol, filesManager: any CKFilesManageable = CKFilesManager(), speechManager: any CKSpeechManageable = CKSpeechManager()) {
         self.db = db
         self.filesManager = filesManager
         self.speechManager = speechManager
@@ -158,13 +158,13 @@ import PhotosUI
 }
 
 extension CKChatVM: CKSpeechManagerDelegate {
-    nonisolated func isRecording(_ isRecording: Bool) {
+    public nonisolated func isRecording(_ isRecording: Bool) {
         Task { @MainActor [weak self] in
             self?.isRecording = isRecording
         }
     }
     
-    nonisolated func didUpdate(_ transcript: String) {
+    public nonisolated func didUpdate(_ transcript: String) {
         Task { @MainActor [weak self] in
             self?.text = transcript
         }

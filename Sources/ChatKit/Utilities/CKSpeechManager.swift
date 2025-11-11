@@ -8,7 +8,7 @@
 import Foundation
 import Speech
 
-@MainActor protocol CKSpeechManageable {
+@MainActor public protocol CKSpeechManageable {
     var delegate: (any CKSpeechManagerDelegate)? { get set }
     var didRequestAuthorization: Bool { get set }
     
@@ -17,15 +17,15 @@ import Speech
     func stopRecording(_ inputNode: AVAudioInputNode)
 }
 
-@MainActor protocol CKSpeechManagerDelegate: AnyObject {
+@MainActor public protocol CKSpeechManagerDelegate: AnyObject {
     func isRecording(_ isRecording: Bool)
     func didUpdate(_ transcript: String)
 }
 
-@MainActor final class CKSpeechManager: NSObject, CKSpeechManageable {
-    weak var delegate: (any CKSpeechManagerDelegate)?
+@MainActor public final class CKSpeechManager: NSObject, CKSpeechManageable {
+    public weak var delegate: (any CKSpeechManagerDelegate)?
     
-    var didRequestAuthorization = false
+    public var didRequestAuthorization = false
     private(set) var isAuthorized = false
     private(set) var isRecording = false {
         didSet {
@@ -57,7 +57,7 @@ import Speech
         return transcript.count - 1
     }
     
-    func requestAuthorization() async throws {
+    public func requestAuthorization() async throws {
         didRequestAuthorization = true
         let granted = await AVAudioApplication.requestRecordPermission()
         guard granted else { throw Errors.micNotAuthorized }
@@ -83,7 +83,7 @@ import Speech
             configuration: lmConfig)
     }
     
-    func toggleDictation() throws {
+    public func toggleDictation() throws {
         guard isAuthorized else { throw Errors.privacyNotAuthorized }
         if audioEngine.isRunning {
             audioEngine.stop()
@@ -169,7 +169,7 @@ import Speech
            execute: dispatchWork!)
     }
     
-    func stopRecording(_ inputNode: AVAudioInputNode) {
+    public func stopRecording(_ inputNode: AVAudioInputNode) {
         audioEngine.stop()
         inputNode.removeTap(onBus: 0)
         recognitionRequest = nil
@@ -179,7 +179,7 @@ import Speech
 }
 
 extension CKSpeechManager: SFSpeechRecognizerDelegate {
-    nonisolated func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
+    nonisolated public func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
         Task { @MainActor in
             isAuthorized = available
         }

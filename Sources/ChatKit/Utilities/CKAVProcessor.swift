@@ -9,8 +9,8 @@ import SwiftUI
 import PhotosUI
 @preconcurrency import AVFoundation
 
-final class CKAVProcessor: @unchecked Sendable {
-    static let shared = CKAVProcessor()
+public final class CKAVProcessor: @unchecked Sendable {
+    public static let shared = CKAVProcessor()
     private init() {}
     
     func loadImage(from item: PhotosPickerItem) async throws -> UIImage? {
