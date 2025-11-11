@@ -9,40 +9,40 @@ import SwiftUI
 import Observation
 import PhotosUI
 
-@MainActor protocol ChatVMApiDelegate: AnyObject {
+@MainActor public protocol ChatVMApiDelegate: AnyObject {
     func fetchMessages(for chatGroupId: String, after message: CKMessage?) async throws -> [CKMessage]
     func send(senderId: String, senderName: String, text: String, media: [CKAVSendable], chatGroupId: String, docId: String) async throws
 }
 
 @Observable @MainActor public final class CKChatVM {
-    weak var apiDelegate: (any ChatVMApiDelegate)?
+    public weak var apiDelegate: (any ChatVMApiDelegate)?
     
-    let db: any CKMessageCacherProtocol
-    let filesManager: any CKFilesManageable
+    public let db: any CKMessageCacherProtocol
+    public let filesManager: any CKFilesManageable
+    public let speechManager: any CKSpeechManageable
     
-    private let avp = CKAVProcessor.shared
-    private let cacheLimit = 100
+    public let avp = CKAVProcessor.shared
+    public let cacheLimit = 100
     
-    var messages: [CKMessage] = []
-    var tempMessagesCache: [CKMessage] = []
+    public internal(set) var messages: [CKMessage] = []
+    public internal(set) var tempMessagesCache: [CKMessage] = []
     
-    var text = ""
-    var selectedMedia: [CKAVSendable] = []
-    var photoPickerItems: [PhotosPickerItem] = []
+    public internal(set) var text = ""
+    public internal(set) var selectedMedia: [CKAVSendable] = []
+    public internal(set) var photoPickerItems: [PhotosPickerItem] = []
     
-    var showCamera = false
-    var showCameraError = false
+    public internal(set) var showCamera = false
+    public internal(set) var showCameraError = false
     
-    var showPhotosPicker = false
+    public internal(set) var showPhotosPicker = false
     
-    var showAuthorizationError = false
-    var authorizationError = ""
+    public internal(set) var showAuthorizationError = false
+    public internal(set) var authorizationError = ""
     
-    private(set) var speechManager: any CKSpeechManageable
-    var isRecording = false
+    public internal(set) var isRecording = false
     
-    var displayError = false
-    var error = ""
+    public internal(set) var displayError = false
+    public internal(set) var error = ""
     
     public init(db: any CKMessageCacherProtocol, filesManager: any CKFilesManageable = CKFilesManager(), speechManager: any CKSpeechManageable = CKSpeechManager()) {
         self.db = db
