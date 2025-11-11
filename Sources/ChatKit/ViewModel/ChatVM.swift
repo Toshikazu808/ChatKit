@@ -15,6 +15,7 @@ protocol ChatVMDelegate: AnyObject {
 
 @Observable @MainActor final class ChatVM {
     let db: any CKMessageCacherProtocol
+    let filesManager: any CKFilesManageable
     
     private let avp = CKAVProcessor.shared
     private let cacheLimit = 100
@@ -40,8 +41,9 @@ protocol ChatVMDelegate: AnyObject {
     var displayError = false
     var error = ""
     
-    init(db: any CKMessageCacherProtocol, speechManager: any CKSpeechManageable = CKSpeechManager()) {
+    init(db: any CKMessageCacherProtocol, filesManager: any CKFilesManageable = CKFilesManager(), speechManager: any CKSpeechManageable = CKSpeechManager()) {
         self.db = db
+        self.filesManager = filesManager
         self.speechManager = speechManager
         NotificationCenter.default.addObserver(
             self,
