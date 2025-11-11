@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ExpToken {
+public struct CKExpToken {
     public let jwt: String
     public let tpc: String
     public let expiration: Date
@@ -94,7 +94,7 @@ public struct ExpToken {
         }
     }
     
-    static func empty() -> ExpToken {
-        return ExpToken(jwt: "", tpc: "")
+    static func empty() -> CKExpToken {
+        return CKExpToken(jwt: "", tpc: "")
     }
 }
