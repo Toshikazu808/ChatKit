@@ -178,7 +178,7 @@ import Speech
     }
 }
 
-extension SpeechManager: SFSpeechRecognizerDelegate {
+extension CKSpeechManager: SFSpeechRecognizerDelegate {
     nonisolated func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
         Task { @MainActor in
             isAuthorized = available
