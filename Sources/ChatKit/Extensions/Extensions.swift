@@ -8,7 +8,7 @@
 import Foundation
 
 extension Date {
-    static var epochStart: Date {
+    public static var epochStart: Date {
         Date(timeIntervalSince1970: 0)
     }
     static let oneHourFromNow: Date = .now.plus(.oneHour)
