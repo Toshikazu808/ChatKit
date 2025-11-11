@@ -34,14 +34,15 @@ protocol ChatVMDelegate: AnyObject {
     var showAuthorizationError = false
     var authorizationError = ""
     
-//    private(set) var speechManager: any SpeechManageable
+    private(set) var speechManager: any CKSpeechManageable
     var isRecording = false
     
     var displayError = false
     var error = ""
     
-    init(db: any CKMessageCacherProtocol) {
+    init(db: any CKMessageCacherProtocol, speechManager: any CKSpeechManageable = CKSpeechManager()) {
         self.db = db
+        self.speechManager = speechManager
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(cacheMessages),
