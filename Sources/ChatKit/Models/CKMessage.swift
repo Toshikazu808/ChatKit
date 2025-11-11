@@ -16,8 +16,7 @@ public struct CKMessage: Comparable, Identifiable, Hashable {
     public let senderName: String
     public let message: String
     public var mediaUrls: [CKMediaUrl] = []
-    public let jwt: String
-    public let tpc: String
+    public let expToken: CKExpToken
     
     public enum DBKeys {
         static let id = "id"
@@ -27,19 +26,17 @@ public struct CKMessage: Comparable, Identifiable, Hashable {
         static let senderName = "senderName"
         static let message = "message"
         static let mediaUrls = "mediaUrls"
-        static let jwt = "jwt"
-        static let tpc = "tpc"
+        static let expToken = "expToken"
     }
     
-    public init(id: String, chatGroupId: String, date: Date, senderId: String, senderName: String, message: String, jwt: String, tpc: String, mediaUrls: [CKMediaUrl] = []) {
+    public init(id: String, chatGroupId: String, date: Date, senderId: String, senderName: String, message: String, expToken: CKExpToken, mediaUrls: [CKMediaUrl] = []) {
         self.id = id
         self.chatGroupId = chatGroupId
         self.date = date
         self.senderId = senderId
         self.senderName = senderName
         self.message = message
-        self.jwt = jwt
-        self.tpc = tpc
+        self.expToken = expToken
         self.mediaUrls = mediaUrls
     }
     
@@ -85,15 +82,10 @@ public struct CKMessage: Comparable, Identifiable, Hashable {
         } else {
             self.mediaUrls = []
         }
-        if let jwt = data[DBKeys.jwt] as? String {
-            self.jwt = jwt
+        if let expToken = data[DBKeys.expToken] as? CKExpToken {
+            self.expToken = expToken
         } else {
-            self.jwt = ""
-        }
-        if let tpc = data[DBKeys.tpc] as? String {
-            self.tpc = tpc
-        } else {
-            self.tpc = ""
+            self.expToken = .empty()
         }
         if !missing.isEmpty {
             throw Errors.keysNotFound("CKMessage", missing)
@@ -108,8 +100,7 @@ public struct CKMessage: Comparable, Identifiable, Hashable {
         self.senderName = cachedMessage.senderName
         self.message = cachedMessage.message
         self.mediaUrls = cachedMessage.mediaUrls.map({ CKMediaUrl(cachedMediaUrl: $0) })
-        self.jwt = cachedMessage.jwt
-        self.tpc = cachedMessage.tpc
+        self.expToken = CKExpToken(cachedMessage.expToken)
     }
     
     public func toObject() -> [String: Any] {
@@ -132,7 +123,7 @@ public struct CKMessage: Comparable, Identifiable, Hashable {
     }
     
     public static func empty() -> CKMessage {
-        return CKMessage(id: "", chatGroupId: "", date: .now, senderId: "", senderName: "", message: "", jwt: "", tpc: "", mediaUrls: [])
+        return CKMessage(id: "", chatGroupId: "", date: .now, senderId: "", senderName: "", message: "", expToken: .empty(), mediaUrls: [])
     }
     
     public func hash(into hasher: inout Hasher) {
@@ -151,10 +142,10 @@ public struct CKMessage: Comparable, Identifiable, Hashable {
     @Relationship(deleteRule: .cascade, inverse: \CKCachedMediaUrl.cachedMessage)
     public private(set) var mediaUrls: [CKCachedMediaUrl]
     
-    public private(set) var jwt: String
-    public private(set) var tpc: String
+    @Relationship(deleteRule: .cascade, inverse: \CKCachedExpToken.cachedMessage)
+    public private(set) var expToken: CKCachedExpToken
     
-    public init(id: String, chatGroupId: String, date: Date, senderId: String, senderName: String, message: String, mediaUrls: [CKMediaUrl] = [], jwt: String, tpc: String) {
+    public init(id: String, chatGroupId: String, date: Date, senderId: String, senderName: String, message: String, mediaUrls: [CKMediaUrl] = [], expToken: CKExpToken) {
         self.id = id
         self.chatGroupId = chatGroupId
         self.date = date
@@ -162,8 +153,7 @@ public struct CKMessage: Comparable, Identifiable, Hashable {
         self.senderName = senderName
         self.message = message
         self.mediaUrls = mediaUrls.map({ CKCachedMediaUrl(mediaUrl: $0) })
-        self.jwt = jwt
-        self.tpc = tpc
+        self.expToken = CKCachedExpToken(expToken)
     }
     
     public init(message: CKMessage) {
@@ -174,7 +164,6 @@ public struct CKMessage: Comparable, Identifiable, Hashable {
         self.senderName = message.senderName
         self.message = message.message
         self.mediaUrls = message.mediaUrls.map({ CKCachedMediaUrl(mediaUrl: $0) })
-        self.jwt = message.jwt
-        self.tpc = message.tpc
+        self.expToken = CKCachedExpToken(message.expToken)
     }
 }
