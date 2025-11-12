@@ -52,7 +52,103 @@ public struct CKChatView: View {
     }
     
     public var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            VStack(spacing: 0) {
+                CKMessageScrollView(messages: $vm.messages, userId: userId, onTapMessage: { msg in
+                    if isKeyboardFocused == .chat {
+                        isKeyboardFocused = nil
+                    }
+                }, onTapMedia: { msg, media in
+                    navPath.append(.remoteMediaView(msg, media))
+                })
+                .environment(vm)
+                
+                if !vm.selectedMedia.isEmpty {
+                    CKMessageImagePreviewCarouselView(media: $vm.selectedMedia) { av in
+                        navPath.append(.mediaView(av, vm.selectedMedia))
+                    }
+                    .padding(.horizontal, 20)
+                }
+                
+                HStack(alignment: .center) {
+                    Spacer()
+                    CKChatButton(type: .photo, size: buttonSize) {
+                        vm.showPhotosPicker = true
+                    }
+                    
+                    CKChatButton(type: .camera, size: buttonSize) {
+                        vm.openCamera()
+                    }
+                    
+                    CKKeyboardView(placeholder: "", text: $vm.text, type: .default, submitLabel: .send, cornerRadius: 20, showShadow: false, minHeight: 20) {
+                        Task {
+                            try await vm.sendMessage(senderId: userId, senderName: userName, chatGroupId: chatGroup.id)
+                        }
+                    }
+                    .focused($isKeyboardFocused, equals: .chat)
+                    .padding(.horizontal, 2)
+                    
+                    if vm.isRecording {
+                        CKChatButton(type: .stop, size: buttonSize) {
+                            Task {
+                                await vm.toggleDictation()
+                            }
+                        }
+                        .padding(.bottom, bottomButtonPadding)
+                    } else if !vm.selectedMedia.isEmpty || !vm.text.isEmpty {
+                        CKChatButton(type: .send, size: buttonSize) {
+                            Task {
+                                try await vm.sendMessage(senderId: userId, senderName: userName, chatGroupId: chatGroup.id)
+                            }
+                        }
+                        .padding(.bottom, bottomButtonPadding)
+                    } else {
+                        CKChatButton(type: .mic, size: buttonSize) {
+                            Task {
+                                await vm.toggleDictation()
+                            }
+                        }
+                        .padding(.bottom, bottomButtonPadding)
+                        .alert("Authorization Alert", isPresented: $vm.showAuthorizationError) {
+                            Button("Cancel", role: .cancel) {}
+                            Button("Settings") {
+                                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                            }
+                        } message: {
+                            Text(Errors.privacyNotAuthorized.errorDescription)
+                        }
+                    }
+                    Spacer()
+                }
+            }
+            
+            // Update Combine pipeline here for optional DecorationView()
+        }
+        .onAppear {
+            Task {
+                try await vm.fetchMessages(for: chatGroup.id)
+            }
+            viewDidAppear?(chatGroup)
+        }
+        .onDisappear {
+            viewDidDisappear?(chatGroup)
+        }
+        .alert("Authorization Alert", isPresented: $vm.showCameraError) {
+            Button("Cancel", role: .cancel) {}
+            Button("Settings") {
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+            }
+        } message: {
+            Text(Errors.cameraNotAuthorized.errorDescription)
+        }
+        .sheet(isPresented: $vm.showCamera) {
+            CKCameraPhotosPicker(selectedMedia: $vm.selectedMedia)
+                .ignoresSafeArea()
+        }
+        .photosPicker(isPresented: $vm.showPhotosPicker, selection: $vm.photoPickerItems, maxSelectionCount: 10, selectionBehavior: .ordered, matching: .any(of: [.images, .videos]))
+        .onChange(of: vm.photoPickerItems) { _, _ in
+            vm.getSelectedImages()
+        }
     }
 }
 
