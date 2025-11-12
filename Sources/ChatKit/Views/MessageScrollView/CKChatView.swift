@@ -47,5 +47,29 @@ public struct CKChatView: View {
 }
 
 #Preview {
-    CKChatView()
+    do {
+        // In-memory ModelContainer for SwiftData models
+        let schema = Schema([CKCachedMessage.self])
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(
+            for: schema,
+            configurations: config)
+        
+        let previewGroup = CKChatGroup(
+            id: "abc123",
+            recentlyModified: .now,
+            members: [
+                .init(fname: "Joe", lname: "Schmoe", id: "123abc")
+            ],
+            recentMessage: .init(from: "Joe Schmoe", message: "Test message"),
+            expToken: .init(jwt: "abcxyz", tpc: "xyzabc"),
+            isOpen: true)
+        return CKChatView(
+            userId: "user-123",
+            userName: "Preview User",
+            chatGroup: previewGroup,
+            modelContext: container.mainContext)
+    } catch {
+        return Text("Failed to create ModelContainer: \(error.localizedDescription)")
+    }
 }
