@@ -84,3 +84,13 @@ extension String {
         self += "."
     }
 }
+
+extension [CKChatGroupMember] {
+    func toObjectArray() -> [[String: Any]] {
+        var objectArray: [[String: Any]] = []
+        self.forEach { member in
+            objectArray.append(member.toObject())
+        }
+        return objectArray
+    }
+}
