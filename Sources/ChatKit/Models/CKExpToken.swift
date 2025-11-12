@@ -104,6 +104,14 @@ public struct CKExpToken {
     public static func empty() -> CKExpToken {
         return CKExpToken(jwt: "", tpc: "")
     }
+    
+    public func toObject() -> [String: Any] {
+        return [
+            Keys.jwt: jwt,
+            Keys.tpc: tpc,
+            Keys.expiration: expiration
+        ]
+    }
 }
 
 @Model public final class CKCachedExpToken {
