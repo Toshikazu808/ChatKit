@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct CKExpandedImageCarouselView: View {
+public struct CKMessageImagePreviewCarouselView: View {
     @Binding public var media: [CKAVSendable]
     public let didTap: (CKAVSendable) -> Void
     
@@ -63,5 +63,5 @@ public struct CKExpandedImageCarouselView: View {
 }
 
 #Preview {
-    CKExpandedImageCarouselView(media: .constant([])) { _ in }
+    CKMessageImagePreviewCarouselView(media: .constant([])) { _ in }
 }
