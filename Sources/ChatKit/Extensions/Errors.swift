@@ -17,7 +17,7 @@ public enum Errors: LocalizedError {
     case micNotAuthorized
     case dictationNotAuthorized
     
-    public var errorDescription: String? {
+    public var errorDescription: String {
         switch self {
         case .noSelf:
             "Reference to self has been deinitialized."
