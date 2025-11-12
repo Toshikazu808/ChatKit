@@ -16,6 +16,9 @@ public struct CKChatView: View {
     public let chatGroup: CKChatGroup
     @State public var vm: CKChatVM
     @Binding public var navPath: [CKChatsNavPath]
+    public let viewDidAppear: ((CKChatGroup) -> Void)?
+    public let viewDidDisappear: ((CKChatGroup) -> Void)?
+    
     private let bottomButtonPadding: CGFloat = 3
     private let buttonSize: CGFloat = 25
     
@@ -25,22 +28,26 @@ public struct CKChatView: View {
     @FocusState var isKeyboardFocused: Field?
     
     /// Used internally when initializing from a `CKChatsRootView`.
-    init(userId: String, userName: String, chatGroup: CKChatGroup, modelContext: ModelContext, navPath: Binding<[CKChatsNavPath]> = .constant([])) {
+    init(userId: String, userName: String, chatGroup: CKChatGroup, modelContext: ModelContext, viewDidAppear: ((CKChatGroup) -> Void)? = nil, viewDidDisappear: ((CKChatGroup) -> Void)? = nil, navPath: Binding<[CKChatsNavPath]> = .constant([])) {
         self.userId = userId
         self.userName = userName
         self.chatGroup = chatGroup
         let db = CKMessageCacher(modelContext: modelContext)
         let vm = CKChatVM(userId: userId, db: db)
         self._vm = State(wrappedValue: vm)
+        self.viewDidAppear = viewDidAppear
+        self.viewDidDisappear = viewDidDisappear
         self._navPath = navPath
     }
     
     /// Optional `init` if the `CKChatView` does NOT need to be embedded in a `CKChatsRootView`.
-    init(userId: String, userName: String, chatGroup: CKChatGroup, vm: CKChatVM, navPath: Binding<[CKChatsNavPath]> = .constant([])) {
+    init(userId: String, userName: String, chatGroup: CKChatGroup, vm: CKChatVM, viewDidAppear: @escaping (CKChatGroup) -> Void, viewDidDisappear: @escaping (CKChatGroup) -> Void, navPath: Binding<[CKChatsNavPath]> = .constant([])) {
         self.userId = userId
         self.userName = userName
         self.chatGroup = chatGroup
         self._vm = State(wrappedValue: vm)
+        self.viewDidAppear = viewDidAppear
+        self.viewDidDisappear = viewDidDisappear
         self._navPath = navPath
     }
     
@@ -71,7 +78,9 @@ public struct CKChatView: View {
             userId: "user-123",
             userName: "Preview User",
             chatGroup: previewGroup,
-            modelContext: container.mainContext)
+            modelContext: container.mainContext,
+            viewDidAppear: { _ in },
+            viewDidDisappear: { _ in })
     } catch {
         return Text("Failed to create ModelContainer: \(error.localizedDescription)")
     }
