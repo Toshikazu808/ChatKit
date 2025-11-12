@@ -14,8 +14,8 @@ public protocol CKMessageCacherProtocol {
 }
 
 public struct CKMessageCacher: CKMessageCacherProtocol {
-    let modelContext: ModelContext
-    private let cacheLimit = 100
+    public let modelContext: ModelContext
+    public let cacheLimit = 100
     
     public func fetchCachedMessage(for chatGroupId: String) -> [CKMessage] {
         do {
