@@ -15,6 +15,7 @@ public struct CKChatView: View {
 //    @Environment(ChatGroupsVM.self) private var chatGroupsVM
     public let chatGroup: CKChatGroup
     @State public var vm: CKChatVM
+    @Binding public var navPath: [CKChatsNavPath]
     private let bottomButtonPadding: CGFloat = 3
     private let buttonSize: CGFloat = 25
     
@@ -24,21 +25,23 @@ public struct CKChatView: View {
     @FocusState var isKeyboardFocused: Field?
     
     /// Used internally when initializing from a `CKChatsRootView`.
-    init(userId: String, userName: String, chatGroup: CKChatGroup, modelContext: ModelContext) {
+    init(userId: String, userName: String, chatGroup: CKChatGroup, modelContext: ModelContext, navPath: Binding<[CKChatsNavPath]> = .constant([])) {
         self.userId = userId
         self.userName = userName
         self.chatGroup = chatGroup
         let db = CKMessageCacher(modelContext: modelContext)
         let vm = CKChatVM(userId: userId, db: db)
         self._vm = State(wrappedValue: vm)
+        self._navPath = navPath
     }
     
     /// Optional `init` if the `CKChatView` does NOT need to be embedded in a `CKChatsRootView`.
-    init(userId: String, userName: String, chatGroup: CKChatGroup, vm: CKChatVM) {
+    init(userId: String, userName: String, chatGroup: CKChatGroup, vm: CKChatVM, navPath: Binding<[CKChatsNavPath]> = .constant([])) {
         self.userId = userId
         self.userName = userName
         self.chatGroup = chatGroup
         self._vm = State(wrappedValue: vm)
+        self._navPath = navPath
     }
     
     public var body: some View {
