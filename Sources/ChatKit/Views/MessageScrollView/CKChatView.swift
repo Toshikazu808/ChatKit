@@ -23,6 +23,7 @@ public struct CKChatView: View {
     }
     @FocusState var isKeyboardFocused: Field?
     
+    /// Used internally when initializing from a `CKChatsRootView`.
     init(userId: String, userName: String, chatGroup: CKChatGroup, modelContext: ModelContext) {
         self.userId = userId
         self.userName = userName
@@ -32,6 +33,7 @@ public struct CKChatView: View {
         self._vm = State(wrappedValue: vm)
     }
     
+    /// Optional `init` if the `CKChatView` does NOT need to be embedded in a `CKChatsRootView`.
     init(userId: String, userName: String, chatGroup: CKChatGroup, vm: CKChatVM) {
         self.userId = userId
         self.userName = userName
