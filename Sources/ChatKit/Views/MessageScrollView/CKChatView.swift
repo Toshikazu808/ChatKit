@@ -12,7 +12,6 @@ import SwiftData
 public struct CKChatView: View {
     public let userId: String
     public let userName: String
-//    @Environment(ChatGroupsVM.self) private var chatGroupsVM
     public let chatGroup: CKChatGroup
     @State public var vm: CKChatVM
     @Binding public var navPath: [CKChatsNavPath]
