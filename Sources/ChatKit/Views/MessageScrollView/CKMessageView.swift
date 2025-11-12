@@ -35,7 +35,7 @@ public struct CKMessageView: View {
                             .frame(width: screenWidth * 0.5)
                     }
                     
-                    CKImageCarouselView(message: message, maxHeight: screenWidth * 0.4) { message, selectedMedia in
+                    CKMessageImageCarouselView(message: message, maxHeight: screenWidth * 0.4) { message, selectedMedia in
                         onTapMedia(message, selectedMedia)
                     }
                     

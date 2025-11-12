@@ -1,5 +1,5 @@
 //
-//  SwiftUIView.swift
+//  CKMessageImageCarouselView.swift
 //  ChatKit
 //
 //  Created by Ryan Kanno on 11/10/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct CKImageCarouselView: View {
+public struct CKMessageImageCarouselView: View {
     public let message: CKMessage
     public let maxHeight: CGFloat
     public let didTap: (CKMessage, CKMediaUrl) -> Void
@@ -54,5 +54,5 @@ public struct CKImageCarouselView: View {
 #Preview {
     var message = CKMessage(id: "abc123", chatGroupId: "0yvg4g52h8", date: .now, senderId: "98nrvtgvt", senderName: "Ryan Kanno", message: "Hi, are you available to take a job?  I wanted to get some help fixing my sink.", expToken: .empty())
     message.mediaUrls = [CKMediaUrl(imgUrl: "https://picsum.photos/400", videoUrl: "")]
-    return CKImageCarouselView(message: message, maxHeight: 110) { _, _ in }
+    return CKMessageImageCarouselView(message: message, maxHeight: 110) { _, _ in }
 }
