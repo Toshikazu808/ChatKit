@@ -8,12 +8,12 @@
 import SwiftUI
 import AVKit
 
-struct CKLocalMediaView: View {
-    let media: [CKAVSendable]
-    let selectedMedia: CKAVSendable
+public struct CKLocalMediaView: View {
+    public let media: [CKAVSendable]
+    public let selectedMedia: CKAVSendable
     private let players: [AVPlayer?]
     
-    init(media: [CKAVSendable], selectedMedia: CKAVSendable) {
+    public init(media: [CKAVSendable], selectedMedia: CKAVSendable) {
         self.media = media
         self.selectedMedia = selectedMedia
         self.players = media.map({ av in
@@ -22,7 +22,7 @@ struct CKLocalMediaView: View {
         })
     }
     
-    var body: some View {
+    public var body: some View {
         ZStack {
             Color.white
                 .ignoresSafeArea()

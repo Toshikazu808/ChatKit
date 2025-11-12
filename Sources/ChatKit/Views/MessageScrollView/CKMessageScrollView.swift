@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct CKMessageScrollView: View {
-    @Binding var messages: [CKMessage]
-    let userId: String
-    let onTapMessage: (CKMessage) -> Void
-    let onTapMedia: (CKMessage, CKMediaUrl) -> Void
+public struct CKMessageScrollView: View {
+    @Binding public var messages: [CKMessage]
+    public let userId: String
+    public let onTapMessage: (CKMessage) -> Void
+    public let onTapMedia: (CKMessage, CKMediaUrl) -> Void
     
-    var body: some View {
+    public var body: some View {
         GeometryReader { geometry in
             let w = geometry.size.width
             ScrollViewReader { proxy in

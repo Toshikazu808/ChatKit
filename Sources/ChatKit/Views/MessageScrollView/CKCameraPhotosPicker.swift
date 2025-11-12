@@ -8,12 +8,12 @@
 import SwiftUI
 import AVFoundation
 
-struct CKCameraPhotosPicker: UIViewControllerRepresentable {
-    @Binding var selectedMedia: [CKAVSendable]
-    let mediaTypes: [String]
+public struct CKCameraPhotosPicker: UIViewControllerRepresentable {
+    @Binding public var selectedMedia: [CKAVSendable]
+    public let mediaTypes: [String]
     @Environment(\.dismiss) var dismiss
     
-    enum MediaTypes {
+    public enum MediaTypes {
         case image, video, movie
         
         var mediaType: String {
@@ -25,12 +25,12 @@ struct CKCameraPhotosPicker: UIViewControllerRepresentable {
         }
     }
     
-    init(selectedMedia: Binding<[CKAVSendable]>, mediaTypes: [MediaTypes] = [.image, .video, .movie]) {
+    public init(selectedMedia: Binding<[CKAVSendable]>, mediaTypes: [MediaTypes] = [.image, .video, .movie]) {
         self._selectedMedia = selectedMedia
         self.mediaTypes = mediaTypes.map({ $0.mediaType })
     }
     
-    func makeUIViewController(context: Context) -> some UIViewController {
+    public func makeUIViewController(context: Context) -> some UIViewController {
         let imagePicker = UIImagePickerController()
         imagePicker.allowsEditing = false
         imagePicker.sourceType = .camera
@@ -39,19 +39,19 @@ struct CKCameraPhotosPicker: UIViewControllerRepresentable {
         return imagePicker
     }
     
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
+    public func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
     
-    func makeCoordinator() -> Coordinator {
+    public func makeCoordinator() -> Coordinator {
         return Coordinator(parent: self)
     }
     
-    final class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    public final class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         var parent: CKCameraPhotosPicker
-        init(parent: CKCameraPhotosPicker) {
+        public init(parent: CKCameraPhotosPicker) {
             self.parent = parent
         }
         
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             let mediaType = info[UIImagePickerController.InfoKey.mediaType] as! String
             switch mediaType {
             case UTType.image.identifier:
@@ -78,7 +78,7 @@ struct CKCameraPhotosPicker: UIViewControllerRepresentable {
         }
     }
     
-    static func checkAuthorization() -> Bool {
+    public static func checkAuthorization() -> Bool {
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             let status = AVCaptureDevice.authorizationStatus(for: .video)
             switch status {

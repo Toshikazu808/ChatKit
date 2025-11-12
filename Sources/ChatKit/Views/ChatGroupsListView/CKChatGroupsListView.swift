@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct CKChatGroupsListView: View {
-    @Binding var chatGroups: [CKChatGroup]
-    let didTapArchiveButton: (CKChatGroup) -> Void
+public struct CKChatGroupsListView: View {
+    @Binding public var chatGroups: [CKChatGroup]
+    public let didTapArchiveButton: (CKChatGroup) -> Void
     
-    var body: some View {
+    public var body: some View {
         List(Array(chatGroups), id: \.id) { chatGroup in
             NavigationLink(value: CKChatsNavPath.messages(chatGroup)) {
                 CKChatGroupRow(chatGroup: chatGroup)

@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct CKBubbleView: View {
-    let message: CKMessage
-    let fromUser: Bool
+public struct CKBubbleView: View {
+    public let message: CKMessage
+    public let fromUser: Bool
     
-    var body: some View {
+    public var body: some View {
         let msg = message.message
         Text(msg)
             .font(.title3)

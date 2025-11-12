@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct CKChatView: View {
+public struct CKChatView: View {
     
     
-    var body: some View {
+    public var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }

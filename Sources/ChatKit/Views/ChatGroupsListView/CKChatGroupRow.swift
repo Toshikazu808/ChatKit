@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct CKChatGroupRow: View {
-    let chatGroup: CKChatGroup
+public struct CKChatGroupRow: View {
+    public let chatGroup: CKChatGroup
     
-    var body: some View {
+    public var body: some View {
         HStack {
             Image(systemName: "person.2.circle")
                 .resizable()

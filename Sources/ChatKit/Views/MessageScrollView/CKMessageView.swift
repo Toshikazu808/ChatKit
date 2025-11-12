@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CKMessageView: View {
+public struct CKMessageView: View {
     private let message: CKMessage
     private let userId: String
     private let screenWidth: CGFloat
@@ -17,7 +17,7 @@ struct CKMessageView: View {
         return message.senderId == userId
     }
     
-    init(message: CKMessage, userId: String, screenWidth: CGFloat, onTapMessage: @escaping (CKMessage) -> Void, onTapMedia: @escaping (CKMessage, CKMediaUrl) -> Void) {
+    public init(message: CKMessage, userId: String, screenWidth: CGFloat, onTapMessage: @escaping (CKMessage) -> Void, onTapMedia: @escaping (CKMessage, CKMediaUrl) -> Void) {
         self.message = message
         self.userId = userId
         self.screenWidth = screenWidth
@@ -25,7 +25,7 @@ struct CKMessageView: View {
         self.onTapMedia = onTapMedia
     }
     
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 3) {
             if !message.mediaUrls.isEmpty {
                 HStack(spacing: 0) {

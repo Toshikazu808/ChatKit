@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct CKImageCarouselView: View {
-    let message: CKMessage
-    let maxHeight: CGFloat
-    let didTap: (CKMessage, CKMediaUrl) -> Void
+public struct CKImageCarouselView: View {
+    public let message: CKMessage
+    public let maxHeight: CGFloat
+    public let didTap: (CKMessage, CKMediaUrl) -> Void
     
-    var body: some View {
+    public var body: some View {
         let h = maxHeight * 0.9
         ScrollView(.horizontal) {
             LazyHStack {

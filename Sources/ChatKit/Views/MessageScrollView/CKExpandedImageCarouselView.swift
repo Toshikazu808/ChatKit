@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct CKExpandedImageCarouselView: View {
-    @Binding var media: [CKAVSendable]
-    let didTap: (CKAVSendable) -> Void
+public struct CKExpandedImageCarouselView: View {
+    @Binding public var media: [CKAVSendable]
+    public let didTap: (CKAVSendable) -> Void
     
-    var body: some View {
+    public var body: some View {
         GeometryReader { geometry in
             let h = geometry.size.height * 0.9
             ScrollView(.horizontal) {
