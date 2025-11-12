@@ -25,6 +25,10 @@ public struct CKRecentMessage {
         message = data[Keys.message.rawValue] as? String ?? ""
     }
     
+    public static func empty() -> CKRecentMessage {
+        return CKRecentMessage(from: "", message: "")
+    }
+    
     public func toObject() -> [String: Any] {
         return [
             Keys.from.rawValue: from,
