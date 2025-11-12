@@ -25,7 +25,7 @@ public struct CKChatGroup: Sendable, Identifiable, Equatable, Hashable {
         static let members = "members"
         static let recentMessage = "recentMessage"
         static let recentlyModified = "recentlyModified"
-        static let callToken = "callToken"
+        static let expToken = "expToken"
         static let isOpen = "isOpen"
     }
     
@@ -43,6 +43,7 @@ public struct CKChatGroup: Sendable, Identifiable, Equatable, Hashable {
         if let id = data[Keys.id] as? String {
             self.id = id
         } else {
+            self.id = ""
             missing.append(Keys.id)
         }
         if let recentlyModified = data[Keys.recentlyModified] as? Date {
@@ -63,10 +64,11 @@ public struct CKChatGroup: Sendable, Identifiable, Equatable, Hashable {
             self.recentMessage = CKRecentMessage(data: [:])
             missing.append(Keys.recentMessage)
         }
-        if let tokenData = data[expToken] as? [String: Any] {
+        if let tokenData = data[Keys.expToken] as? [String: Any] {
             self.expToken = try CKExpToken(using: tokenData)
         } else {
             self.expToken = .empty()
+            missing.append(Keys.expToken)
         }
         if let isOpen = data[Keys.isOpen] as? Bool {
             self.isOpen = isOpen
@@ -74,7 +76,7 @@ public struct CKChatGroup: Sendable, Identifiable, Equatable, Hashable {
             self.isOpen = false
         }
         if !missing.isEmpty {
-
+            throw Errors.keysNotFound("CKChatGroup", missing)
         }
     }
     
@@ -97,7 +99,7 @@ public struct CKChatGroup: Sendable, Identifiable, Equatable, Hashable {
             Keys.members: members.toObjectArray(),
             Keys.recentMessage: recentMessage.toObject(),
             Keys.recentlyModified: recentlyModified,
-            Keys.callToken: CKExpToken.empty().toObject(),
+            Keys.expToken: CKExpToken.empty().toObject(),
             Keys.isOpen: isOpen
         ]
     }
