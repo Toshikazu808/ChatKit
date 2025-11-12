@@ -25,5 +25,5 @@ struct CKBubbleView: View {
 }
 
 #Preview {
-    CKBubbleView(message: CKMessage(id: "abc123", chatGroupId: "0yvg4g52h8", date: .now, senderId: "98nrvtgvt", senderName: "Ryan Kanno", message: "Hi, are you available to take a job?  I wanted to get some help fixing my sink.", jwt: "", tpc: ""), fromUser: true)
+    CKBubbleView(message: CKMessage(id: "abc123", chatGroupId: "0yvg4g52h8", date: .now, senderId: "98nrvtgvt", senderName: "Ryan Kanno", message: "Hi, are you available to take a job?  I wanted to get some help fixing my sink.", expToken: .empty()), fromUser: true)
 }

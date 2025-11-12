@@ -52,7 +52,7 @@ struct CKImageCarouselView: View {
 }
 
 #Preview {
-    var message = CKMessage(id: "abc123", chatGroupId: "0yvg4g52h8", date: .now, senderId: "98nrvtgvt", senderName: "Ryan Kanno", message: "Hi, are you available to take a job?  I wanted to get some help fixing my sink.", jwt: "", tpc: "")
+    var message = CKMessage(id: "abc123", chatGroupId: "0yvg4g52h8", date: .now, senderId: "98nrvtgvt", senderName: "Ryan Kanno", message: "Hi, are you available to take a job?  I wanted to get some help fixing my sink.", expToken: .empty())
     message.mediaUrls = [CKMediaUrl(imgUrl: "https://picsum.photos/400", videoUrl: "")]
     return CKImageCarouselView(message: message, maxHeight: 110) { _, _ in }
 }

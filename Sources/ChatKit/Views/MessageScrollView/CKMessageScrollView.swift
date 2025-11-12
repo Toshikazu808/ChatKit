@@ -44,5 +44,7 @@ struct CKMessageScrollView: View {
 }
 
 #Preview {
-    CKMessageScrollView(onTapMessage: { _ in }, onTapMedia: { _, _ in })
+    CKMessageScrollView(messages: .constant([
+        .init(id: "12345", chatGroupId: "54321", date: .now, senderId: "abc123", senderName: "Joe Schmoe", message: "This is a test message", expToken: .empty())
+    ]), userId: "abc123", onTapMessage: { _ in }, onTapMedia: { _, _ in })
 }

@@ -94,5 +94,5 @@ struct CKMessageView: View {
 }
 
 #Preview {
-    CKMessageView(message: CKMessage(id: "abc123", chatGroupId: "0yvg4g52h8", date: .now, senderId: "98nrvtgvt", senderName: "Ryan Kanno", message: "Hi, are you available to take a job?  I wanted to get some help fixing my sink.", jwt: "", tpc: ""), isFromUser: true, screenWidth: 150, onTapMessage: { _ in }, onTapMedia: { _, _ in })
+    CKMessageView(message: CKMessage(id: "abc123", chatGroupId: "0yvg4g52h8", date: .now, senderId: "98nrvtgvt", senderName: "Ryan Kanno", message: "Hi, are you available to take a job?  I wanted to get some help fixing my sink.", expToken: .empty()), userId: "abc123", screenWidth: 150, onTapMessage: { _ in }, onTapMedia: { _, _ in })
 }
