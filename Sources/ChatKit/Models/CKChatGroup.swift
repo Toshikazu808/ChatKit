@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct CKChatGroup: Identifiable, Equatable, Hashable {
+public struct CKChatGroup: Sendable, Identifiable, Equatable, Hashable {
     public let id: String
     public let recentlyModified: Date
     public let members: [CKChatGroupMember]

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-public struct CKExpToken {
+public struct CKExpToken: Sendable {
     public let jwt: String
     public let tpc: String
     public let expiration: Date

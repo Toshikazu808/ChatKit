@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-public struct CKMessage: Comparable, Identifiable, Hashable {
+public struct CKMessage: Sendable, Comparable, Identifiable, Hashable {
     public let id: String
     public let chatGroupId: String
     public let date: Date

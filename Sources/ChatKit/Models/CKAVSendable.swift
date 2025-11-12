@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct CKAVSendable: Equatable, Hashable, Sendable {
+public struct CKAVSendable: Sendable, Equatable, Hashable {
     public let id = UUID().uuidString
     public let date: Date = .now
     public var dateGenerated: Date {

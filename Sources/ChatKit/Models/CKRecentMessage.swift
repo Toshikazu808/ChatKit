@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct CKRecentMessage {
+public struct CKRecentMessage: Sendable {
     public let from: String
     public let message: String
     

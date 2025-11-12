@@ -3,7 +3,7 @@
 
 import SwiftUI
 
-public struct CKMovie {
+public struct CKMovie: Sendable {
     public let localUrl: URL
     public let dateGenerated: Date
     public var compressedUrl: URL?

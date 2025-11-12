@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-public struct CKMediaUrl: Hashable {
+public struct CKMediaUrl: Sendable, Hashable {
     public let imgUrl: String
     public let videoUrl: String
     
