@@ -9,18 +9,18 @@ import SwiftUI
 
 struct CKChatGroupsListView: View {
     @Binding var chatGroups: [CKChatGroup]
-    @Environment(ChatGroupsVM.self) private var vm
+    let didTapArchiveButton: (CKChatGroup) -> Void
     
     var body: some View {
         List(Array(chatGroups), id: \.id) { chatGroup in
-            NavigationLink(value: ChatsNavPath.messages(chatGroup)) {
+            NavigationLink(value: CKChatsNavPath.messages(chatGroup)) {
                 CKChatGroupRow(chatGroup: chatGroup)
             }
             .padding(4)
             .swipeActions(edge: .trailing) {
                 Button {
                     withAnimation {
-                        vm.archive(chatGroup)
+                        didTapArchiveButton(chatGroup)
                     }
                 } label: {
                     Image(systemName: "archivebox")
@@ -34,5 +34,5 @@ struct CKChatGroupsListView: View {
 }
 
 #Preview {
-    CKChatGroupsListView()
+    CKChatGroupsListView(chatGroups: .constant([]), didTapArchiveButton: { _ in })
 }
