@@ -16,6 +16,7 @@ public enum Errors: LocalizedError {
     case privacyNotAuthorized
     case micNotAuthorized
     case dictationNotAuthorized
+    case cameraNotAuthorized
     
     public var errorDescription: String {
         switch self {
@@ -35,6 +36,8 @@ public enum Errors: LocalizedError {
             "Unable to access microphone. Please enable in Settings."
         case .dictationNotAuthorized:
             "Unable to transcribe speech. Please enable Speech Recognition in Settings."
+        case .cameraNotAuthorized:
+            "Unable to access camera. Please enable in Settings."
         }
     }
 }
