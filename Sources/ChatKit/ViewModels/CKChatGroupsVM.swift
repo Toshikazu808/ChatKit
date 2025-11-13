@@ -23,6 +23,16 @@ import Observation
     
     
     
+    public func openChatGroup(from notification: any CKNotificationDisplayable) {
+        let chatGroup = notification.chatGroup
+        let existingChatGroup = chatGroups.first(where: {
+            $0.id == chatGroup.id
+        })
+        if let existingChatGroup {
+            navPath.append(.messages(existingChatGroup))
+        }
+    }
+    
     public func openChatGroup(for chatGroupComparable: any CKChatGroupComparable) {
         if let chat = chatGroups.first(where: { $0.id == chatGroupComparable.id }) {
             self.chatGroupComparable = chatGroupComparable
