@@ -9,13 +9,13 @@ import SwiftUI
 import Observation
 import PhotosUI
 
-@MainActor public protocol ChatVMApiDelegate: AnyObject {
+@MainActor public protocol CKChatVMApiDelegate: AnyObject {
     func fetchMessages(for chatGroupId: String, after message: CKMessage?) async throws -> [CKMessage]
     func send(senderId: String, senderName: String, text: String, media: [CKAVSendable], chatGroupId: String, docId: String) async throws
 }
 
 @Observable @MainActor public final class CKChatVM {
-    public weak var apiDelegate: (any ChatVMApiDelegate)?
+    public weak var apiDelegate: (any CKChatVMApiDelegate)?
     
     public let userId: String
     public let db: any CKMessageCacherProtocol
@@ -67,7 +67,7 @@ import PhotosUI
     
     func fetchMessages(for chatGroupId: String) async throws {
         guard let apiDelegate else {
-            throw Errors.noDelegate("ChatVM", "(any ChatVMApiDelegate)?")
+            throw Errors.noDelegate("ChatVM", "(any CKChatVMApiDelegate)?")
         }
         tempMessagesCache = db.fetchCachedMessage(for: chatGroupId)
         let fetchedMessages = try await apiDelegate.fetchMessages(
@@ -93,7 +93,7 @@ import PhotosUI
     
     func sendMessage(senderId: String, senderName: String, chatGroupId: String, id: String = UUID().uuidString) async throws {
         guard let apiDelegate else {
-            throw Errors.noDelegate("ChatVM", "(any ChatVMApiDelegate)?")
+            throw Errors.noDelegate("ChatVM", "(any CKChatVMApiDelegate)?")
         }
         guard !text.isEmpty || !selectedMedia.isEmpty else { return }
         do {
