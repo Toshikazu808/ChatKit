@@ -11,6 +11,10 @@ public struct CKArchivedChatGroupsListView: View {
     @Environment(CKChatGroupsVM.self) private var vm
     public let userId: String
     
+    init(_ userId: String) {
+        self.userId = userId
+    }
+    
     public var body: some View {
         List(vm.archivedChats) { chatGroup in
             NavigationLink(value: CKChatsNavPath.messages(chatGroup)) {
