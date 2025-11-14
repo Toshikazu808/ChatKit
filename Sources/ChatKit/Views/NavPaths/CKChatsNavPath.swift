@@ -9,8 +9,8 @@ import Foundation
 
 public enum CKChatsNavPath: Hashable {
     case messages(CKChatGroup)
-    case mediaView(CKAVSendable, [CKAVSendable])
-    case remoteMediaView(CKMessage, CKMediaUrl)
+    case mediaView([CKAVSendable])
+    case remoteMediaView(CKMessage)
     case archived
 }
 
