@@ -9,7 +9,7 @@ import SwiftUI
 import Observation
 import PhotosUI
 
-@MainActor public protocol CKChatVMApiDelegate: AnyObject {
+public protocol CKChatVMApiDelegate: AnyObject, Sendable {
     func fetchMessages(for chatGroupId: String, after message: CKMessage?) async throws -> [CKMessage]
     func send(senderId: String, senderName: String, text: String, media: [CKAVSendable], chatGroupId: String, docId: String) async throws
 }
