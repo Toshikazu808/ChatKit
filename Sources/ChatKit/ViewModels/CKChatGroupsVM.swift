@@ -42,6 +42,14 @@ public protocol CKChatGroupsVMApiDelegate: AnyObject, Sendable {
     
     
     
+    func fetchChats(_ userId: String) async throws {
+        guard let cgm, archivedChats.isEmpty else { return }
+        isLoading = true
+        chatGroups = try await cgm.fetchInitialChatGroups(userId: userId, isOpen: true)
+        isLoading = false
+        didFetchBatch = true
+    }
+    
     func fetchChatGroupComparable(for chatGroupId: String) async throws {
         chatGroupComparable = try await cgm?.fetchChatGroupComparable(for: chatGroupId)
     }
