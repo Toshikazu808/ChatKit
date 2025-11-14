@@ -21,33 +21,28 @@ public struct CKLocalMediaCarouselView: View {
     }
     
     public var body: some View {
-        ZStack {
-            Color.white
-                .ignoresSafeArea()
-            
-            TabView {
-                ForEach(0..<media.count, id: \.self) { i in
-                    if media[i].movie != nil {
-                        if let player = players[i] {
-                            VideoPlayer(player: player)
-                                .clipped()
-                                .ignoresSafeArea()
-                        } else {
-                            Image(systemName: "photo.badge.arrow.down")
-                                .resizable()
-                                .scaledToFit()
-                                .padding()
-                        }
-                    } else {
-                        Image(uiImage: media[i].image)
-                            .resizable()
+        TabView {
+            ForEach(0..<media.count, id: \.self) { i in
+                if media[i].movie != nil {
+                    if let player = players[i] {
+                        VideoPlayer(player: player)
+                            .clipped()
                             .ignoresSafeArea()
+                    } else {
+                        Image(systemName: "photo.badge.arrow.down")
+                            .resizable()
                             .scaledToFit()
+                            .padding()
                     }
+                } else {
+                    Image(uiImage: media[i].image)
+                        .resizable()
+                        .ignoresSafeArea()
+                        .scaledToFit()
                 }
             }
-            .tabViewStyle(.page)
         }
+        .tabViewStyle(.page)
     }
 }
 
