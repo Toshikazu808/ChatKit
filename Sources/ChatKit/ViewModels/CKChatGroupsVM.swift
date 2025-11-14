@@ -85,6 +85,13 @@ public protocol CKChatGroupsVMApiDelegate: AnyObject, Sendable {
         shouldOpenChat = false
     }
     
+    func archive(_ chatGroup: CKChatGroup) {
+        chatGroups.removeAll(where: { $0.id == chatGroup.id })
+        Task {
+            try await vmApi.archive(chatGroup)
+        }
+    }
+    
     public func resetArchivedChats() {
         if !navPath.contains(.archived) {
             archivedChats.removeAll()
