@@ -12,7 +12,7 @@ public protocol CKChatGroupsVMApiDelegate: AnyObject, Sendable {
     /// > Important: Remember to set this variable to `nil` in the `deinit` of the class conforming to `CKChatGroupsVMApiDelegate`.  `weak` variables can't be declared in protocols so we need to manage this memory manually to prevent retain cycles.
     var chatGroupsDelegate: (any CKChatGroupsApiSubscriber)? { get set }
     
-    func fetchInitialChatGroups(userId: String, isOpen: Bool) async -> [CKChatGroup]
+    func fetchInitialChatGroups(userId: String, isOpen: Bool) async throws -> [CKChatGroup]
     func createNewChatGroup<T: CKChatUser>(user1: T, user2: T, chatGroupComparable: any CKChatGroupComparable, recentMessage: CKRecentMessage) async throws
     func fetchChatGroupComparable(for chatGroupId: String) async throws -> any CKChatGroupComparable
     func archive(_ chatGroupComparable: any CKChatGroupComparable) async throws
@@ -44,6 +44,14 @@ public protocol CKChatGroupsVMApiDelegate: AnyObject, Sendable {
     
     func fetchChatGroupComparable(for chatGroupId: String) async throws {
         chatGroupComparable = try await cgm?.fetchChatGroupComparable(for: chatGroupId)
+    }
+    
+    func fetchArchivedChats(_ userId: String) async throws {
+        guard let cgm, archivedChats.isEmpty else { return }
+        isLoading = true
+        archivedChats = try await cgm.fetchInitialChatGroups(userId: userId, isOpen: false)
+        isLoading = false
+        didFetchArchivedBatch = true
     }
     
     public func openChatGroup(from notification: any CKNotificationDisplayable) {
