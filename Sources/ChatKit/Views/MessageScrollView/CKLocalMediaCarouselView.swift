@@ -8,14 +8,12 @@
 import SwiftUI
 import AVKit
 
-public struct CKLocalMediaView: View {
+public struct CKLocalMediaCarouselView: View {
     public let media: [CKAVSendable]
-    public let selectedMedia: CKAVSendable
     private let players: [AVPlayer?]
     
-    public init(media: [CKAVSendable], selectedMedia: CKAVSendable) {
+    public init(media: [CKAVSendable]) {
         self.media = media
-        self.selectedMedia = selectedMedia
         self.players = media.map({ av in
             guard let movie = av.movie else { return nil }
             return AVPlayer(url: movie.localUrl)
@@ -54,5 +52,5 @@ public struct CKLocalMediaView: View {
 }
 
 #Preview {
-    CKLocalMediaView(media: [], selectedMedia: CKAVSendable.empty())
+    CKLocalMediaCarouselView(media: [])
 }
