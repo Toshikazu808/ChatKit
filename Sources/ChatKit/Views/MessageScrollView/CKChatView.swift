@@ -58,13 +58,13 @@ public struct CKChatView: View {
                         isKeyboardFocused = nil
                     }
                 }, onTapMedia: { msg, media in
-                    navPath.append(.remoteMediaView(msg, media))
+                    navPath.append(.remoteMediaView(msg))
                 })
                 .environment(vm)
                 
                 if !vm.selectedMedia.isEmpty {
                     CKMessageImagePreviewCarouselView(media: $vm.selectedMedia) { av in
-                        navPath.append(.mediaView(av, vm.selectedMedia))
+                        navPath.append(.mediaView(vm.selectedMedia))
                     }
                     .padding(.horizontal, 20)
                 }
