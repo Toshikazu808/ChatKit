@@ -23,11 +23,7 @@ public protocol CKChatGroupsVMApiDelegate: AnyObject, Sendable {
 }
 
 @Observable @MainActor public final class CKChatGroupsVM {
-    public weak var cgm: (any CKChatGroupsVMApiDelegate)? {
-        didSet {
-            cgm?.chatGroupsDelegate = self
-        }
-    }
+    public let vmApi: any CKChatGroupsVMApiDelegate
     public var viewDidLoad = false
     public var navPath: [CKChatsNavPath] = []
     public var isLoading = false
@@ -40,24 +36,27 @@ public protocol CKChatGroupsVMApiDelegate: AnyObject, Sendable {
     public var chatGroupComparable: (any CKChatGroupComparable)?
     public internal(set) var shouldOpenChat = false
     
-    
+    init(_ vmApi: any CKChatGroupsVMApiDelegate) {
+        self.vmApi = vmApi
+        self.vmApi.chatGroupsDelegate = self
+    }
     
     func fetchChats(_ userId: String) async throws {
-        guard let cgm, archivedChats.isEmpty else { return }
+        guard archivedChats.isEmpty else { return }
         isLoading = true
-        chatGroups = try await cgm.fetchInitialChatGroups(userId: userId, isOpen: true)
+        chatGroups = try await vmApi.fetchInitialChatGroups(userId: userId, isOpen: true)
         isLoading = false
         didFetchBatch = true
     }
     
     func fetchChatGroupComparable(for chatGroupId: String) async throws {
-        chatGroupComparable = try await cgm?.fetchChatGroupComparable(for: chatGroupId)
+        chatGroupComparable = try await vmApi.fetchChatGroupComparable(for: chatGroupId)
     }
     
     func fetchArchivedChats(_ userId: String) async throws {
-        guard let cgm, archivedChats.isEmpty else { return }
+        guard archivedChats.isEmpty else { return }
         isLoading = true
-        archivedChats = try await cgm.fetchInitialChatGroups(userId: userId, isOpen: false)
+        archivedChats = try await vmApi.fetchInitialChatGroups(userId: userId, isOpen: false)
         isLoading = false
         didFetchArchivedBatch = true
     }
