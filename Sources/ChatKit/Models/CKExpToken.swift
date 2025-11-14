@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  CKExpToken.swift
 //  ChatKit
 //
 //  Created by Ryan Kanno on 11/11/25.

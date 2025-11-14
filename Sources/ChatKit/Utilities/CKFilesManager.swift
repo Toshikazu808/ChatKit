@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  CKFilesManager.swift
 //  ChatKit
 //
 //  Created by Ryan Kanno on 11/10/25.

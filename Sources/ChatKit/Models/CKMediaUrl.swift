@@ -1,5 +1,5 @@
 //
-//  File 2.swift
+//  CKMediaUrl.swift
 //  ChatKit
 //
 //  Created by Ryan Kanno on 11/10/25.

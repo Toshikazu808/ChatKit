@@ -1,5 +1,5 @@
 //
-//  SwiftUIView.swift
+//  CKChatButton.swift
 //  ChatKit
 //
 //  Created by Ryan Kanno on 11/12/25.

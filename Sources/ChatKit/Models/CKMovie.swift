@@ -1,5 +1,9 @@
-// The Swift Programming Language
-// https://docs.swift.org/swift-book
+//
+//  CKMovie.swift
+//  ChatKit
+//
+//  Created by Ryan Kanno on 11/10/25.
+//
 
 import SwiftUI
 
