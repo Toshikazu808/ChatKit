@@ -14,7 +14,7 @@ public protocol CKChatGroupsVMApiDelegate: AnyObject, Sendable {
     
     func fetchInitialChatGroups(userId: String, isOpen: Bool) async -> [CKChatGroup]
     func createNewChatGroup<T: CKChatUser>(user1: T, user2: T, chatGroupComparable: any CKChatGroupComparable, recentMessage: CKRecentMessage) async throws
-    
+    func fetchChatGroupComparable(for chatGroupId: String) async throws -> any CKChatGroupComparable
     func archive(_ chatGroupComparable: any CKChatGroupComparable) async throws
 }
 
@@ -41,6 +41,10 @@ public protocol CKChatGroupsVMApiDelegate: AnyObject, Sendable {
     public internal(set) var shouldOpenChat = false
     
     
+    
+    func fetchChatGroupComparable(for chatGroupId: String) async throws {
+        chatGroupComparable = try await cgm?.fetchChatGroupComparable(for: chatGroupId)
+    }
     
     public func openChatGroup(from notification: any CKNotificationDisplayable) {
         let chatGroup = notification.chatGroup
