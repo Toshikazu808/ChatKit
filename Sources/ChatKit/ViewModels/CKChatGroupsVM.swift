@@ -10,7 +10,7 @@ import Observation
 
 public protocol CKChatGroupsVMApiDelegate: AnyObject, Sendable {
     /// > Important: Remember to set this variable to `nil` in the `deinit` of the class conforming to `CKChatGroupsVMApiDelegate`.  `weak` variables can't be declared in protocols so we need to manage this memory manually to prevent retain cycles.
-    var chatGroupsDelegate: (any CKChatGroupsApiSubscriber)? { get set }
+    var chatGroupsApiSubscriber: (any CKChatGroupsApiSubscriber)? { get set }
     
     func fetchInitialChatGroups(userId: String, isOpen: Bool) async throws -> [CKChatGroup]
     func createNewChatGroup<T: CKChatUser>(user1: T, user2: T, chatGroupComparable: any CKChatGroupComparable, recentMessage: CKRecentMessage) async throws
@@ -38,7 +38,7 @@ public protocol CKChatGroupsVMApiDelegate: AnyObject, Sendable {
     
     init(_ vmApi: any CKChatGroupsVMApiDelegate) {
         self.vmApi = vmApi
-        self.vmApi.chatGroupsDelegate = self
+        self.vmApi.chatGroupsApiSubscriber = self
     }
     
     func fetchChats(_ userId: String) async throws {
