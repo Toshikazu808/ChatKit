@@ -8,10 +8,10 @@
 import SwiftUI
 import AVKit
 
-struct CKRemoteMediaCarouselView: View {
-    let message: CKMessage
+public struct CKRemoteMediaCarouselView: View {
+    public let message: CKMessage
     
-    var body: some View {
+    public var body: some View {
         TabView {
             ForEach(0..<message.mediaUrls.count, id: \.self) { i in
                 let media = message.mediaUrls[i]
