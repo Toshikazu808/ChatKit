@@ -8,7 +8,26 @@
 import Foundation
 import Observation
 
+public protocol CKChatGroupsVMApiDelegate: AnyObject {
+    /// > Important: Remember to set this variable to `nil` in the `deinit` of the class conforming to `CKChatGroupsVMApiDelegate`.  `weak` variables can't be declared in protocols so we need to manage this memory manually to prevent retain cycles.
+    var chatGroupsDelegate: (any CKChatGroupsApiSubscriber)? { get set }
+    
+    func fetchInitialChatGroups(userId: String, isOpen: Bool) async -> [CKChatGroup]
+    func createNewChatGroup<T: CKChatUser>(user1: T, user2: T, chatGroupComparable: any CKChatGroupComparable, recentMessage: CKRecentMessage) async throws
+    
+    func archive(_ chatGroupComparable: any CKChatGroupComparable) async throws
+}
+
+@MainActor public protocol CKChatGroupsApiSubscriber: AnyObject {
+    func didFetch(_ chatGroup: CKChatGroup)
+}
+
 @Observable @MainActor public final class CKChatGroupsVM {
+    public weak var cgm: (any CKChatGroupsVMApiDelegate)? {
+        didSet {
+            cgm?.chatGroupsDelegate = self
+        }
+    }
     public var viewDidLoad = false
     public var navPath: [CKChatsNavPath] = []
     public var isLoading = false
@@ -51,5 +70,18 @@ import Observation
         if !navPath.contains(.archived) {
             archivedChats.removeAll()
         }
+    }
+}
+
+extension CKChatGroupsVM: CKChatGroupsApiSubscriber {
+    public func didFetch(_ chatGroup: CKChatGroup) {
+        guard !didFetchBatch else {
+            didFetchBatch = false
+            return
+        }
+        if let i = chatGroups.firstIndex(where: { $0.id == chatGroup.id }) {
+            chatGroups.remove(at: i)
+        }
+        chatGroups.insert(chatGroup, at: 0)
     }
 }
