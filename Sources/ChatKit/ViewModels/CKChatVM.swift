@@ -49,10 +49,10 @@ public protocol CKChatVMApiDelegate: AnyObject, Sendable {
         self.userId = userId
         self.db = db
         if let userMessageBubbleViewColor {
-            ColorThemes.userMessageBubbleViewColor = userMessageBubbleViewColor
+            Theme.userMessageBubbleViewColor = userMessageBubbleViewColor
         }
         if let otherUserMessageBubbleViewColor {
-            ColorThemes.otherUserMessageBubbleViewColor = otherUserMessageBubbleViewColor
+            Theme.otherUserMessageBubbleViewColor = otherUserMessageBubbleViewColor
         }
         self.filesManager = filesManager
         self.speechManager = speechManager

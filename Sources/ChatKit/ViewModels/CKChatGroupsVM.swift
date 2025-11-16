@@ -40,10 +40,10 @@ import Observation
         self.vmApi = vmApi
         self.vmApi.chatGroupsApiSubscriber = self
         if let userMessageBubbleViewColor {
-            ColorThemes.userMessageBubbleViewColor = userMessageBubbleViewColor
+            Theme.userMessageBubbleViewColor = userMessageBubbleViewColor
         }
         if let otherUserMessageBubbleViewColor {
-            ColorThemes.otherUserMessageBubbleViewColor = otherUserMessageBubbleViewColor
+            Theme.otherUserMessageBubbleViewColor = otherUserMessageBubbleViewColor
         }
     }
     
