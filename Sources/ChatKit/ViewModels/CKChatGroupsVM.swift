@@ -5,7 +5,7 @@
 //  Created by Ryan Kanno on 11/11/25.
 //
 
-import Foundation
+import SwiftUI
 import Observation
 
 @MainActor public protocol CKChatGroupsVMApiDelegate: AnyObject, Sendable {
@@ -36,9 +36,15 @@ import Observation
     public var chatGroupComparable: (any CKChatGroupComparable)?
     public internal(set) var shouldOpenChat = false
     
-    init(_ vmApi: any CKChatGroupsVMApiDelegate) {
+    init(_ vmApi: any CKChatGroupsVMApiDelegate, userMessageBubbleViewColor: Color? = nil, otherUserMessageBubbleViewColor: Color? = nil) {
         self.vmApi = vmApi
         self.vmApi.chatGroupsApiSubscriber = self
+        if let userMessageBubbleViewColor {
+            ColorThemes.userMessageBubbleViewColor = userMessageBubbleViewColor
+        }
+        if let otherUserMessageBubbleViewColor {
+            ColorThemes.otherUserMessageBubbleViewColor = otherUserMessageBubbleViewColor
+        }
     }
     
     func fetchChats(_ userId: String) async throws {
