@@ -27,10 +27,10 @@ import Foundation
     }
     
     func fetchChatGroupComparable(for chatGroupId: String) async throws -> any CKChatGroupComparable {
-        throw NSError(domain: "Mock", code: 0)
+        return MockChatGroupComparable(id: "123456789")
     }
     
     func archive(_ chatGroupComparable: any CKChatGroupComparable) async throws {
-        
+        // do nothing
     }
 }
