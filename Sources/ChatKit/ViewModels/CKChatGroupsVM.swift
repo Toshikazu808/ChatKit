@@ -8,7 +8,7 @@
 import Foundation
 import Observation
 
-public protocol CKChatGroupsVMApiDelegate: AnyObject, Sendable {
+@MainActor public protocol CKChatGroupsVMApiDelegate: AnyObject, Sendable {
     /// > Important: Remember to set this variable to `nil` in the `deinit` of the class conforming to `CKChatGroupsVMApiDelegate`.  `weak` variables can't be declared in protocols so we need to manage this memory manually to prevent retain cycles.
     var chatGroupsApiSubscriber: (any CKChatGroupsApiSubscriber)? { get set }
     
@@ -18,7 +18,7 @@ public protocol CKChatGroupsVMApiDelegate: AnyObject, Sendable {
     func archive(_ chatGroupComparable: any CKChatGroupComparable) async throws
 }
 
-@MainActor public protocol CKChatGroupsApiSubscriber: AnyObject {
+@MainActor public protocol CKChatGroupsApiSubscriber: AnyObject, Sendable {
     func didFetch(_ chatGroup: CKChatGroup)
 }
 
