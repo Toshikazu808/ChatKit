@@ -12,3 +12,7 @@ import Foundation
 public protocol CKChatGroupComparable: Identifiable {
     var id: String { get }
 }
+
+internal struct MockChatGroupComparable: CKChatGroupComparable {
+    let id: String
+}
