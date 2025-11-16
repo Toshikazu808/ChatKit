@@ -51,5 +51,5 @@ public struct CKChatsRootView: View {
 }
 
 #Preview {
-    CKChatsRootView(userId: "abc123", userName: "Joe Schmoe")
+    MockContainerView()
 }
