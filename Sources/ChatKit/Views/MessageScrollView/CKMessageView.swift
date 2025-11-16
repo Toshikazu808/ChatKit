@@ -65,7 +65,7 @@ public struct CKMessageView: View {
                             .padding(.bottom, 4)
                     }
                     
-                    CKBubbleView(message: message, fromUser: isFromUser)
+                    CKMessageBubbleView(message: message, fromUser: isFromUser)
                         .onTapGesture {
                             onTapMessage(message)
                         }
