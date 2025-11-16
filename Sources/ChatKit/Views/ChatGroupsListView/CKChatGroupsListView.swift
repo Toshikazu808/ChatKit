@@ -31,7 +31,3 @@ public struct CKChatGroupsListView: View {
         .listStyle(.plain)
     }
 }
-
-#Preview {
-    CKChatGroupsListView()
-}
