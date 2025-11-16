@@ -43,7 +43,7 @@ public struct CKChatGroupRow: View {
         id: "abc123",
         recentlyModified: .now,
         members: [
-            CKChatGroupMember(fname: "Ryan", lname: "Kanno", id: "c4283n"),
+            CKChatGroupMember(fname: "Jane", lname: "Brown", id: "c4283n"),
             CKChatGroupMember(fname: "Joe", lname: "Schmoe", id: "754n98")
         ],
         recentMessage: CKRecentMessage(

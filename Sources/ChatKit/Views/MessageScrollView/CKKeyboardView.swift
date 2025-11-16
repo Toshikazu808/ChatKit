@@ -84,4 +84,5 @@ public struct CKKeyboardView: View {
         
         CKKeyboardView(placeholder: "test@email.com", text: .constant(""), type: .emailAddress, header: "email", minHeight: CKKeyboardView.withHeaderHeight)
     }
-    .padding()}
+    .padding()
+}
