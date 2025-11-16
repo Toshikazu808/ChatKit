@@ -47,6 +47,14 @@ public struct CKChatsRootView: View {
                     }
                 }
         }
+        .onAppear {
+            if !vm.viewDidLoad {
+                vm.viewDidLoad = true
+                Task {
+                    try await vm.fetchChats(userId)
+                }
+            }
+        }
     }
 }
 
