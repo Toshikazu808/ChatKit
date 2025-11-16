@@ -15,8 +15,8 @@ internal struct MockContainerView: View {
     
     init() {
         do {
-            let schema = Schema([CKCachedMessage.self])
-            let config = ModelConfiguration("ChatKitSamplePreview", schema: schema)
+            let schema = Schema([CKCachedMessage.self, CKCachedExpToken.self, CKCachedMediaUrl.self])
+            let config = ModelConfiguration(isStoredInMemoryOnly: true)
             modelContainer = try ModelContainer(for: schema, configurations: config)
             let mockApi = MockApiDelegate()
             let vm = CKChatGroupsVM(mockApi)
