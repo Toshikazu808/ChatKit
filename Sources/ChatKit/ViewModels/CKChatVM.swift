@@ -45,17 +45,12 @@ public protocol CKChatVMApiDelegate: AnyObject, Sendable {
     public internal(set) var displayError = false
     public internal(set) var error = ""
     
-    public init(userId: String, db: any CKMessageCacherProtocol, userMessageBubbleViewColor: Color? = nil, otherUserMessageBubbleViewColor: Color? = nil, filesManager: any CKFilesManageable = CKFilesManager(), speechManager: any CKSpeechManageable = CKSpeechManager()) {
+    public init(userId: String, db: any CKMessageCacherProtocol, colorThemeConfig: CKColorThemeConfig? = nil, filesManager: any CKFilesManageable = CKFilesManager(), speechManager: any CKSpeechManageable = CKSpeechManager()) {
         self.userId = userId
         self.db = db
-        if let userMessageBubbleViewColor {
-            Theme.userMessageBubbleViewColor = userMessageBubbleViewColor
-        }
-        if let otherUserMessageBubbleViewColor {
-            Theme.otherUserMessageBubbleViewColor = otherUserMessageBubbleViewColor
-        }
         self.filesManager = filesManager
         self.speechManager = speechManager
+        colorThemeConfig?.setColorTheme()
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(cacheMessages),

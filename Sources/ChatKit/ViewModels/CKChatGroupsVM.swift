@@ -24,6 +24,7 @@ import Observation
 
 @Observable @MainActor public final class CKChatGroupsVM {
     public let vmApi: any CKChatGroupsVMApiDelegate
+    public let colorThemeConfig: CKColorThemeConfig?
     public var viewDidLoad = false
     public var navPath: [CKChatsNavPath] = []
     public var isLoading = false
@@ -36,15 +37,11 @@ import Observation
     public var chatGroupComparable: (any CKChatGroupComparable)?
     public internal(set) var shouldOpenChat = false
     
-    init(_ vmApi: any CKChatGroupsVMApiDelegate, userMessageBubbleViewColor: Color? = nil, otherUserMessageBubbleViewColor: Color? = nil) {
+    init(_ vmApi: any CKChatGroupsVMApiDelegate, colorThemeConfig: CKColorThemeConfig? = nil) {
         self.vmApi = vmApi
+        self.colorThemeConfig = colorThemeConfig
         self.vmApi.chatGroupsApiSubscriber = self
-        if let userMessageBubbleViewColor {
-            Theme.userMessageBubbleViewColor = userMessageBubbleViewColor
-        }
-        if let otherUserMessageBubbleViewColor {
-            Theme.otherUserMessageBubbleViewColor = otherUserMessageBubbleViewColor
-        }
+        colorThemeConfig?.setColorTheme()
     }
     
     func fetchChats(_ userId: String) async throws {
