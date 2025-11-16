@@ -65,7 +65,7 @@ public struct CKExpToken: Sendable {
             missing.append(Keys.expiration)
         }
         if !missing.isEmpty {
-            throw Errors.keysNotFound("ExpToken", missing)
+            throw Errors.keysNotFound("CKExpToken", missing)
         }
     }
     
@@ -91,7 +91,7 @@ public struct CKExpToken: Sendable {
             missing.append(Keys.expiration)
         }
         if !missing.isEmpty {
-            throw Errors.keysNotFound("ExpToken", missing)
+            throw Errors.keysNotFound("CKExpToken", missing)
         }
     }
     

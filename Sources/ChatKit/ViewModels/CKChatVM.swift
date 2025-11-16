@@ -67,7 +67,7 @@ public protocol CKChatVMApiDelegate: AnyObject, Sendable {
     
     func fetchMessages(for chatGroupId: String) async throws {
         guard let apiDelegate else {
-            throw Errors.noDelegate("ChatVM", "(any CKChatVMApiDelegate)?")
+            throw Errors.noDelegate("CKChatVM", "(any CKChatVMApiDelegate)?")
         }
         tempMessagesCache = db.fetchCachedMessage(for: chatGroupId)
         let fetchedMessages = try await apiDelegate.fetchMessages(
@@ -93,7 +93,7 @@ public protocol CKChatVMApiDelegate: AnyObject, Sendable {
     
     func sendMessage(senderId: String, senderName: String, chatGroupId: String, id: String = UUID().uuidString) async throws {
         guard let apiDelegate else {
-            throw Errors.noDelegate("ChatVM", "(any CKChatVMApiDelegate)?")
+            throw Errors.noDelegate("CKChatVM", "(any CKChatVMApiDelegate)?")
         }
         guard !text.isEmpty || !selectedMedia.isEmpty else { return }
         do {
