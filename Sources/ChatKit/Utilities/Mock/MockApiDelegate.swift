@@ -12,10 +12,17 @@ import Foundation
     
     func fetchInitialChatGroups(userId: String, isOpen: Bool) async throws -> [CKChatGroup] {
         return [
-            .init(id: "1", recentlyModified: .now.minus(.twoHours), members: [
-                .init(fname: "Joe", lname: "Schmoe", id: "abc123"),
-                .init(fname: "Jane", lname: "Brown", id: "123abc")
-            ], recentMessage: .init(from: "Joe Schmoe", message: "Test message."), expToken: .init(jwt: "ugnbriehb84vg5w", tpc: "n790wrtvhiu"), isOpen: true)
+            .init(
+                id: "1",
+                recentlyModified: .now.minus(.twoHours),
+                members: [
+                    .init(fname: "Joe", lname: "Schmoe", id: "abc123"),
+                    .init(fname: "Jane", lname: "Brown", id: "123abc")
+                ],
+                recentMessage: .init(from: "Joe Schmoe", message: "Test..."),
+                expToken: .init(jwt: "ugnbriehb84vg5w", tpc: "n790wrtvhiu"),
+                isOpen: true
+            )
         ]
     }
     
