@@ -27,12 +27,11 @@ public struct CKMessageImagePreviewCarouselView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                 .overlay(alignment: .center) {
                                     ZStack {
-                                        // TODO: - Update color
                                         if media[i].movie != nil {
                                             Image(systemName: "play.circle")
                                                 .resizable()
                                                 .scaledToFit()
-                                                .foregroundStyle(.gray)
+                                                .foregroundStyle(Theme.silver)
                                                 .frame(width: h / 2, height: h / 2)
                                         }
                                         HStack {

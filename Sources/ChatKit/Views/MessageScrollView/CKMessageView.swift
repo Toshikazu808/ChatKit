@@ -55,12 +55,11 @@ public struct CKMessageView: View {
                             .frame(width: screenWidth * 0.2)
                         Spacer()
                     } else {
-                        // TODO: - Update color
                         // Profile pic of other person
                         Image(systemName: "person.circle.fill")
                             .resizable()
                             .frame(width: 30, height: 30)
-                            .foregroundStyle(Color.teal)
+                            .foregroundStyle(Theme.lightNavy)
                             .padding(.trailing, 8)
                             .padding(.bottom, 4)
                     }
@@ -76,12 +75,11 @@ public struct CKMessageView: View {
                             .fill(.white.opacity(0.00000001))
                             .frame(width: screenWidth * 0.2)
                     } else {
-                        // TODO: - Update color
                         // Profile pic of current user
                         Image(systemName: "person.circle.fill")
                             .resizable()
                             .frame(width: 30, height: 30)
-                            .foregroundStyle(Color.teal)
+                            .foregroundStyle(Theme.lightNavy)
                             .padding(.leading, 8)
                             .padding(.bottom, 4)
                     }

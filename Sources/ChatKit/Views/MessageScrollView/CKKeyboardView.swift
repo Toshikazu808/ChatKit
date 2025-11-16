@@ -72,8 +72,7 @@ public struct CKKeyboardView: View {
                 }
         }
         .background {
-            // TODO: - Update color
-            RoundedRectangle(cornerRadius: cornerRadius).fill(Color.blue)
+            RoundedRectangle(cornerRadius: cornerRadius).fill(Theme.babyBlue)
         }
     }
 }

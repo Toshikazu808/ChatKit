@@ -17,9 +17,8 @@ public struct CKMessageBubbleView: View {
             .font(.title3)
             .padding(8)
             .background {
-                // TODO: - Update colors from view model
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(fromUser ? Color.blue : Color.gray)
+                    .fill(fromUser ? Theme.babyBlue : Theme.lightGray)
             }
     }
 }
