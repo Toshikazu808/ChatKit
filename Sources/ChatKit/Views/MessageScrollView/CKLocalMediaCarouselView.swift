@@ -10,7 +10,7 @@ import AVKit
 
 public struct CKLocalMediaCarouselView: View {
     public let media: [CKAVSendable]
-    private let players: [AVPlayer?]
+    public let players: [AVPlayer?]
     
     public init(media: [CKAVSendable]) {
         self.media = media

@@ -27,7 +27,7 @@ public struct CKChatView: View {
     @FocusState var isKeyboardFocused: Field?
     
     /// Used internally when initializing from a `CKChatsRootView`.
-    init(userId: String, userName: String, chatGroup: CKChatGroup, modelContext: ModelContext, viewDidAppear: ((CKChatGroup) -> Void)? = nil, viewDidDisappear: ((CKChatGroup) -> Void)? = nil, navPath: Binding<[CKChatsNavPath]> = .constant([])) {
+    internal init(userId: String, userName: String, chatGroup: CKChatGroup, modelContext: ModelContext, viewDidAppear: ((CKChatGroup) -> Void)? = nil, viewDidDisappear: ((CKChatGroup) -> Void)? = nil, navPath: Binding<[CKChatsNavPath]> = .constant([])) {
         self.userId = userId
         self.userName = userName
         self.chatGroup = chatGroup
@@ -40,7 +40,7 @@ public struct CKChatView: View {
     }
     
     /// Optional `init` if the `CKChatView` does NOT need to be embedded in a `CKChatsRootView`.
-    init(userId: String, userName: String, chatGroup: CKChatGroup, vm: CKChatVM, viewDidAppear: @escaping (CKChatGroup) -> Void, viewDidDisappear: @escaping (CKChatGroup) -> Void, navPath: Binding<[CKChatsNavPath]> = .constant([])) {
+    public init(userId: String, userName: String, chatGroup: CKChatGroup, vm: CKChatVM, viewDidAppear: @escaping (CKChatGroup) -> Void, viewDidDisappear: @escaping (CKChatGroup) -> Void, navPath: Binding<[CKChatsNavPath]> = .constant([])) {
         self.userId = userId
         self.userName = userName
         self.chatGroup = chatGroup
