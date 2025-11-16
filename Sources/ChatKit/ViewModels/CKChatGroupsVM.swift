@@ -37,14 +37,14 @@ import Observation
     public var chatGroupComparable: (any CKChatGroupComparable)?
     public internal(set) var shouldOpenChat = false
     
-    init(_ vmApi: any CKChatGroupsVMApiDelegate, colorThemeConfig: CKColorThemeConfig? = nil) {
+    public init(_ vmApi: any CKChatGroupsVMApiDelegate, colorThemeConfig: CKColorThemeConfig? = nil) {
         self.vmApi = vmApi
         self.colorThemeConfig = colorThemeConfig
         self.vmApi.chatGroupsApiSubscriber = self
         colorThemeConfig?.setColorTheme()
     }
     
-    func fetchChats(_ userId: String) async throws {
+    internal func fetchChats(_ userId: String) async throws {
         guard archivedChats.isEmpty else { return }
         isLoading = true
         chatGroups = try await vmApi.fetchInitialChatGroups(userId: userId, isOpen: true)
@@ -52,11 +52,11 @@ import Observation
         didFetchBatch = true
     }
     
-    func fetchChatGroupComparable(for chatGroupId: String) async throws {
+    internal func fetchChatGroupComparable(for chatGroupId: String) async throws {
         chatGroupComparable = try await vmApi.fetchChatGroupComparable(for: chatGroupId)
     }
     
-    func fetchArchivedChats(_ userId: String) async throws {
+    internal func fetchArchivedChats(_ userId: String) async throws {
         guard archivedChats.isEmpty else { return }
         isLoading = true
         archivedChats = try await vmApi.fetchInitialChatGroups(userId: userId, isOpen: false)
@@ -88,7 +88,7 @@ import Observation
         shouldOpenChat = false
     }
     
-    func archive(_ chatGroup: CKChatGroup) {
+    internal func archive(_ chatGroup: CKChatGroup) {
         chatGroups.removeAll(where: { $0.id == chatGroup.id })
         Task {
             try await vmApi.archive(chatGroup)

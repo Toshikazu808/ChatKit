@@ -66,7 +66,7 @@ public protocol CKChatVMApiDelegate: AnyObject, Sendable {
         }
     }
     
-    func fetchMessages(for chatGroupId: String) async throws {
+    internal func fetchMessages(for chatGroupId: String) async throws {
         guard let apiDelegate else {
             throw Errors.noDelegate("CKChatVM", "(any CKChatVMApiDelegate)?")
         }
@@ -92,7 +92,7 @@ public protocol CKChatVMApiDelegate: AnyObject, Sendable {
         tempMessagesCache = []
     }
     
-    func sendMessage(senderId: String, senderName: String, chatGroupId: String, id: String = UUID().uuidString) async throws {
+    internal func sendMessage(senderId: String, senderName: String, chatGroupId: String, id: String = UUID().uuidString) async throws {
         guard let apiDelegate else {
             throw Errors.noDelegate("CKChatVM", "(any CKChatVMApiDelegate)?")
         }
@@ -123,7 +123,7 @@ public protocol CKChatVMApiDelegate: AnyObject, Sendable {
         selectedMedia = []
     }
     
-    func getSelectedImages() {
+    internal func getSelectedImages() {
         Task { @MainActor [weak self] in
             guard let self else { return }
             let media = try await avp.loadMedia(from: photoPickerItems)
@@ -132,7 +132,7 @@ public protocol CKChatVMApiDelegate: AnyObject, Sendable {
         }
     }
     
-    func openCamera() {
+    internal func openCamera() {
         if CKCameraPhotosPicker.checkAuthorization() {
             showCamera = true
         } else {
@@ -140,7 +140,7 @@ public protocol CKChatVMApiDelegate: AnyObject, Sendable {
         }
     }
     
-    func toggleDictation() async {
+    internal func toggleDictation() async {
         if speechManager.didRequestAuthorization {
             do {
                 try speechManager.toggleDictation()
