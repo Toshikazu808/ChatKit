@@ -50,8 +50,8 @@ public struct CKMessageImageCarouselView: View {
     }
 }
 
-#Preview {
+#Preview(traits: .sizeThatFitsLayout) {
     var message = CKMessage(id: "abc123", chatGroupId: "0yvg4g52h8", date: .now, senderId: "98nrvtgvt", senderName: "Ryan Kanno", message: "Hi, are you available to take a job?  I wanted to get some help fixing my sink.", expToken: .empty())
-    message.mediaUrls = [CKMediaUrl(imgUrl: "https://picsum.photos/400", videoUrl: "")]
+    message.mediaUrls = [CKMediaUrl(imgUrl: "https://picsum.photos/400", videoUrl: ""), CKMediaUrl(imgUrl: "https://picsum.photos/401", videoUrl: "")]
     return CKMessageImageCarouselView(message: message, maxHeight: 110) { _, _ in }
 }

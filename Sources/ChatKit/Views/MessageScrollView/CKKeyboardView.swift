@@ -77,7 +77,7 @@ public struct CKKeyboardView: View {
     }
 }
 
-#Preview {
+#Preview(traits: .sizeThatFitsLayout) {
     VStack(spacing: 12) {
         CKKeyboardView(placeholder: "test@email.com", text: .constant(""), type: .emailAddress)
         

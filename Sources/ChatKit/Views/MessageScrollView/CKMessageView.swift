@@ -91,6 +91,6 @@ public struct CKMessageView: View {
     }
 }
 
-#Preview {
+#Preview(traits: .sizeThatFitsLayout) {
     CKMessageView(message: CKMessage(id: "abc123", chatGroupId: "0yvg4g52h8", date: .now, senderId: "98nrvtgvt", senderName: "Jane Brown", message: "Hi, are you available to take a job?  I wanted to get some help fixing my sink.", expToken: .empty()), userId: "abc123", screenWidth: 150, onTapMessage: { _ in }, onTapMedia: { _, _ in })
 }

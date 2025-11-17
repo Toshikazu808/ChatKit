@@ -45,7 +45,3 @@ public struct CKLocalMediaCarouselView: View {
         .tabViewStyle(.page)
     }
 }
-
-#Preview {
-    CKLocalMediaCarouselView(media: [])
-}

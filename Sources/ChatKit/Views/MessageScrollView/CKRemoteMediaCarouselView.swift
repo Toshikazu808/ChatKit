@@ -37,7 +37,3 @@ public struct CKRemoteMediaCarouselView: View {
         .tabViewStyle(.page)
     }
 }
-
-#Preview {
-    CKRemoteMediaCarouselView(message: .empty())
-}

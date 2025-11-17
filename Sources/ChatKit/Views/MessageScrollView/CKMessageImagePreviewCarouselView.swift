@@ -60,7 +60,3 @@ public struct CKMessageImagePreviewCarouselView: View {
         .frame(maxWidth: .infinity, maxHeight: 110)
     }
 }
-
-#Preview {
-    CKMessageImagePreviewCarouselView(media: .constant([])) { _ in }
-}
