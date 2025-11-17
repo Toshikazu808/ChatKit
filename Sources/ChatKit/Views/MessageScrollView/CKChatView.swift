@@ -60,7 +60,6 @@ public struct CKChatView: View {
                 }, onTapMedia: { msg, media in
                     navPath.append(.remoteMediaView(msg))
                 })
-                .environment(vm)
                 
                 if !vm.selectedMedia.isEmpty {
                     CKMessageImagePreviewCarouselView(media: $vm.selectedMedia) { av in
