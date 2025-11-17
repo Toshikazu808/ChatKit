@@ -81,6 +81,7 @@ import Observation
         }
     }
     
+    /// Use in the event a parent view like a `TabView` sets `shouldOpenChat = true` and `chatGroupComparable`.
     public func openChatIfNeeded() {
         guard let chatGroupComparable, shouldOpenChat else { return }
         navPath.removeAll()
