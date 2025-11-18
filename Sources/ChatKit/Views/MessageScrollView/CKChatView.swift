@@ -27,12 +27,12 @@ public struct CKChatView: View {
     @FocusState var isKeyboardFocused: Field?
     
     /// Used internally when initializing from a `CKChatsRootView`.
-    internal init(userId: String, userName: String, chatGroup: CKChatGroup, modelContext: ModelContext, viewDidAppear: ((CKChatGroup) -> Void)? = nil, viewDidDisappear: ((CKChatGroup) -> Void)? = nil, navPath: Binding<[CKChatsNavPath]> = .constant([])) {
+    public init(userId: String, userName: String, chatGroup: CKChatGroup, modelContext: ModelContext, apiService: any CKChatsApiService, viewDidAppear: ((CKChatGroup) -> Void)? = nil, viewDidDisappear: ((CKChatGroup) -> Void)? = nil, navPath: Binding<[CKChatsNavPath]> = .constant([])) {
         self.userId = userId
         self.userName = userName
         self.chatGroup = chatGroup
         let db = CKMessageCacher(modelContext: modelContext)
-        let vm = CKChatVM(userId: userId, db: db)
+        let vm = CKChatVM(userId: userId, db: db, apiService: apiService)
         self._vm = State(wrappedValue: vm)
         self.viewDidAppear = viewDidAppear
         self.viewDidDisappear = viewDidDisappear

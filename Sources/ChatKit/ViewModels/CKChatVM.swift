@@ -53,9 +53,9 @@ public protocol CKChatsApiService: AnyObject, Sendable {
     public internal(set) var displayError = false
     public internal(set) var error = ""
     
-    public init(userId: String, db: any CKMessageCacherProtocol, apiDelegate: any CKChatsApiService, colorThemeConfig: CKColorThemeConfig? = nil, filesManager: any CKFilesManageable = CKFilesManager(), speechManager: any CKSpeechManageable = CKSpeechManager()) {
+    public init(userId: String, db: any CKMessageCacherProtocol, apiService: any CKChatsApiService, colorThemeConfig: CKColorThemeConfig? = nil, filesManager: any CKFilesManageable = CKFilesManager(), speechManager: any CKSpeechManageable = CKSpeechManager()) {
         self.userId = userId
-        self.apiService = apiDelegate
+        self.apiService = apiService
         self.db = db
         self.filesManager = filesManager
         self.speechManager = speechManager
