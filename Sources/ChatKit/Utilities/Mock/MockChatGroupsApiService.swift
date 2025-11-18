@@ -7,7 +7,7 @@
 
 import Foundation
 
-@MainActor internal final class MockApiDelegate: CKChatGroupsApiService {
+@MainActor internal final class MockChatGroupsApiService: CKChatGroupsApiService {
     weak var chatGroupsApiSubscriber: (any CKChatGroupsApiSubscriber)?
     
     func fetchInitialChatGroups(userId: String, isOpen: Bool) async throws -> [CKChatGroup] {
