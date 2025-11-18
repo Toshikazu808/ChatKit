@@ -8,9 +8,9 @@
 import SwiftUI
 import Observation
 
-@MainActor public protocol CKChatGroupsVMApiDelegate: AnyObject, Sendable {
+public protocol CKChatGroupsApiService: AnyObject, Sendable {
     /// > Important: Remember to set this variable to `nil` in the `deinit` of the class conforming to `CKChatGroupsVMApiDelegate`.  `weak` variables can't be declared in protocols so we need to manage this memory manually to prevent retain cycles.
-    var chatGroupsApiSubscriber: (any CKChatGroupsApiSubscriber)? { get set }
+    @MainActor var chatGroupsApiSubscriber: (any CKChatGroupsApiSubscriber)? { get set }
     
     func fetchInitialChatGroups(userId: String, isOpen: Bool) async throws -> [CKChatGroup]
     func createNewChatGroup<T: CKChatUser>(user1: T, user2: T, chatGroupComparable: any CKChatGroupComparable, recentMessage: CKRecentMessage) async throws
@@ -23,7 +23,7 @@ import Observation
 }
 
 @Observable @MainActor public final class CKChatGroupsVM {
-    public let vmApi: any CKChatGroupsVMApiDelegate
+    public private(set) weak var apiService: (any CKChatGroupsApiService)?
     public let colorThemeConfig: CKColorThemeConfig?
     public var viewDidLoad = false
     public var navPath: [CKChatsNavPath] = []
@@ -37,29 +37,30 @@ import Observation
     public var chatGroupComparable: (any CKChatGroupComparable)?
     public internal(set) var shouldOpenChat = false
     
-    public init(_ vmApi: any CKChatGroupsVMApiDelegate, colorThemeConfig: CKColorThemeConfig? = nil) {
-        self.vmApi = vmApi
+    public init(_ apiService: any CKChatGroupsApiService, colorThemeConfig: CKColorThemeConfig? = nil) {
+        self.apiService = apiService
         self.colorThemeConfig = colorThemeConfig
-        self.vmApi.chatGroupsApiSubscriber = self
+        self.apiService!.chatGroupsApiSubscriber = self
         colorThemeConfig?.setColorTheme()
     }
     
     internal func fetchChats(_ userId: String) async throws {
-        guard archivedChats.isEmpty else { return }
+        guard let apiService, archivedChats.isEmpty else { return }
         isLoading = true
-        chatGroups = try await vmApi.fetchInitialChatGroups(userId: userId, isOpen: true)
+        chatGroups = try await apiService.fetchInitialChatGroups(userId: userId, isOpen: true)
         isLoading = false
         didFetchBatch = true
     }
     
     internal func fetchChatGroupComparable(for chatGroupId: String) async throws {
-        chatGroupComparable = try await vmApi.fetchChatGroupComparable(for: chatGroupId)
+        guard let apiService else { return }
+        chatGroupComparable = try await apiService.fetchChatGroupComparable(for: chatGroupId)
     }
     
     internal func fetchArchivedChats(_ userId: String) async throws {
-        guard archivedChats.isEmpty else { return }
+        guard let apiService, archivedChats.isEmpty else { return }
         isLoading = true
-        archivedChats = try await vmApi.fetchInitialChatGroups(userId: userId, isOpen: false)
+        archivedChats = try await apiService.fetchInitialChatGroups(userId: userId, isOpen: false)
         isLoading = false
         didFetchArchivedBatch = true
     }
@@ -92,7 +93,7 @@ import Observation
     internal func archive(_ chatGroup: CKChatGroup) {
         chatGroups.removeAll(where: { $0.id == chatGroup.id })
         Task {
-            try await vmApi.archive(chatGroup)
+            try await apiService?.archive(chatGroup)
         }
     }
     

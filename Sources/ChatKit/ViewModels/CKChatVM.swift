@@ -9,13 +9,17 @@ import SwiftUI
 import Observation
 import PhotosUI
 
-public protocol CKChatVMApiDelegate: AnyObject, Sendable {
+public protocol CKChatsApiService: AnyObject, Sendable {
     func fetchMessages(for chatGroupId: String, after message: CKMessage?) async throws -> [CKMessage]
     func send(senderId: String, senderName: String, text: String, media: [CKAVSendable], chatGroupId: String, docId: String) async throws
 }
 
+@MainActor public protocol CKChatsApiSubscriber: AnyObject, Sendable {
+    func didFetch(_ message: CKMessage) async
+}
+
 @Observable @MainActor public final class CKChatVM {
-    public weak var apiDelegate: (any CKChatVMApiDelegate)?
+    public private(set) weak var apiService: (any CKChatsApiService)?
     
     public let userId: String
     public let db: any CKMessageCacherProtocol
@@ -45,8 +49,9 @@ public protocol CKChatVMApiDelegate: AnyObject, Sendable {
     public internal(set) var displayError = false
     public internal(set) var error = ""
     
-    public init(userId: String, db: any CKMessageCacherProtocol, colorThemeConfig: CKColorThemeConfig? = nil, filesManager: any CKFilesManageable = CKFilesManager(), speechManager: any CKSpeechManageable = CKSpeechManager()) {
+    public init(userId: String, db: any CKMessageCacherProtocol, apiDelegate: any CKChatsApiService, colorThemeConfig: CKColorThemeConfig? = nil, filesManager: any CKFilesManageable = CKFilesManager(), speechManager: any CKSpeechManageable = CKSpeechManager()) {
         self.userId = userId
+        self.apiService = apiDelegate
         self.db = db
         self.filesManager = filesManager
         self.speechManager = speechManager
@@ -67,11 +72,9 @@ public protocol CKChatVMApiDelegate: AnyObject, Sendable {
     }
     
     internal func fetchMessages(for chatGroupId: String) async throws {
-        guard let apiDelegate else {
-            throw Errors.noDelegate("CKChatVM", "(any CKChatVMApiDelegate)?")
-        }
+        guard let apiService else { return }
         tempMessagesCache = db.fetchCachedMessage(for: chatGroupId)
-        let fetchedMessages = try await apiDelegate.fetchMessages(
+        let fetchedMessages = try await apiService.fetchMessages(
             for: chatGroupId,
             after: tempMessagesCache.last)
         update(using: fetchedMessages)
@@ -93,10 +96,7 @@ public protocol CKChatVMApiDelegate: AnyObject, Sendable {
     }
     
     internal func sendMessage(senderId: String, senderName: String, chatGroupId: String, id: String = UUID().uuidString) async throws {
-        guard let apiDelegate else {
-            throw Errors.noDelegate("CKChatVM", "(any CKChatVMApiDelegate)?")
-        }
-        guard !text.isEmpty || !selectedMedia.isEmpty else { return }
+        guard let apiService, !text.isEmpty || !selectedMedia.isEmpty else { return }
         do {
             let tempMessage = filesManager.cache(
                 media: selectedMedia,
@@ -105,7 +105,7 @@ public protocol CKChatVMApiDelegate: AnyObject, Sendable {
                 senderId: senderId,
                 senderName: senderName)
             messages.append(tempMessage)
-            try await apiDelegate.send(
+            try await apiService.send(
                 senderId: senderId,
                 senderName: senderName,
                 text: text,
@@ -156,6 +156,19 @@ public protocol CKChatVMApiDelegate: AnyObject, Sendable {
                 authorizationError = error.localizedDescription
                 showAuthorizationError = true
             }
+        }
+    }
+}
+
+extension CKChatVM: CKChatsApiSubscriber {
+    public func didFetch(_ message: CKMessage) async {
+        /// `messages` may contain a `tempMessage` with local URLs for cached image or movie data when user first sent the message.
+        /// If so, replace that message with the received `message` which should contain remote URLs for any image or movie data.
+        if let i = messages.firstIndex(where: { $0.id == message.id }) {
+            filesManager.removeCachedMedia(for: messages[i])
+            messages[i] = message
+        } else {
+            messages.append(message)
         }
     }
 }
