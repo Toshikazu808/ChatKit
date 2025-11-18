@@ -76,5 +76,24 @@ import SwiftData
 }
 
 #Preview {
-    MockContainerView()
+    let chatGroupsApiService = MockChatGroupsApiService()
+    let vm = CKChatGroupsVM(chatGroupsApiService)
+    vm.chatGroups = [
+        .init(id: "876543210", recentlyModified: .now.minus(.halfHour), members: [
+            .init(fname: "Joe", lname: "Schmoe", id: "abc123"),
+            .init(fname: "Jane", lname: "Brown", id: "123abc")
+        ], recentMessage: .init(from: "Joe Schmoe", message: "This is a recent test message"), expToken: .empty(), isOpen: true)
+    ]
+    vm.archivedChats = [
+        .init(id: "876543210", recentlyModified: .now.minus(.oneHour), members: [
+            .init(fname: "Joe", lname: "Schmoe", id: "abc123"),
+            .init(fname: "Jane", lname: "Brown", id: "123abc")
+        ], recentMessage: .init(from: "Joe Schmoe", message: "This is a test archived message"), expToken: .empty(), isOpen: false)
+    ]
+    let chatsApiService = MockChatsApiService()
+    let schema = Schema([CKCachedMessage.self, CKCachedExpToken.self, CKCachedMediaUrl.self])
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let modelContainer = try! ModelContainer(for: schema, configurations: config)
+    return CKChatsRootView(userId: "abc123", userName: "Joe Schmoe", vm: vm, chatsApiService: chatsApiService)
+        .modelContainer(modelContainer)
 }
