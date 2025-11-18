@@ -9,44 +9,61 @@ import SwiftUI
 import SwiftData
 
 /// > Important: Remember to inject a `CKChatGroupsVM` into the environment using `.environment(vm)`.
-public struct CKChatsRootView: View {
+@MainActor public struct CKChatsRootView: View {
     @Environment(\.modelContext) private var modelContext
-    @Environment(CKChatGroupsVM.self) private var vm
+    @State public private(set) var vm: CKChatGroupsVM
     public let userId: String
     public let userName: String
+    public let chatsApiService: any CKChatsApiService
+    
+    public init(userId: String, userName: String, vm: CKChatGroupsVM, chatsApiService: any CKChatsApiService) {
+        self.userId = userId
+        self.userName = userName
+        self._vm = State(wrappedValue: vm)
+        self.chatsApiService = chatsApiService
+    }
     
     public var body: some View {
         @Bindable var vm = vm
         NavigationStack(path: $vm.navPath) {
-            CKChatGroupsListView()
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationTitle("Messages")
-                .toolbar { CKArchivedButton() }
-                .navigationDestination(for: CKChatsNavPath.self) { path in
-                    switch path {
-                    case .messages(let chatGroup):
-                        CKChatView(userId: userId, userName: userName, chatGroup: chatGroup, modelContext: modelContext, viewDidAppear: { chatGroup in
-                            if let id = vm.chatGroupComparable?.id, id.isEmpty {
-                                Task {
-                                    try await vm.fetchChatGroupComparable(for: id)
-                                }
+            CKChatGroupsListView(chatGroups: $vm.chatGroups, didSwipeRow: { chatGroup in
+                vm.archive(chatGroup)
+            })
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Messages")
+            .toolbar { CKArchivedButton($vm.navPath) }
+            .navigationDestination(for: CKChatsNavPath.self) { path in
+                switch path {
+                case .messages(let chatGroup):
+                    CKChatView(userId: userId, userName: userName, chatGroup: chatGroup, modelContext: modelContext, apiService: chatsApiService, viewDidAppear: { chatGroup in
+                        if let id = vm.chatGroupComparable?.id, id.isEmpty {
+                            Task {
+                                try await vm.fetchChatGroupComparable(for: id)
                             }
-                        }, viewDidDisappear: { _ in
-                            vm.chatGroupComparable = nil
-                        }, navPath: $vm.navPath)
+                        }
+                    }, viewDidDisappear: { _ in
+                        vm.chatGroupComparable = nil
+                    }, navPath: $vm.navPath)
+                    .navigationBarTitleDisplayMode(.inline)
+                case .mediaView(let media):
+                    CKLocalMediaCarouselView(media: media)
                         .navigationBarTitleDisplayMode(.inline)
-                    case .mediaView(let media):
-                        CKLocalMediaCarouselView(media: media)
-                            .navigationBarTitleDisplayMode(.inline)
-                    case .remoteMediaView(let msg):
-                        CKRemoteMediaCarouselView(message: msg)
-                            .navigationBarTitleDisplayMode(.inline)
-                    case .archived:
-                        CKArchivedChatGroupsListView(userId)
-                            .navigationBarTitleDisplayMode(.inline)
-                    }
+                case .remoteMediaView(let msg):
+                    CKRemoteMediaCarouselView(message: msg)
+                        .navigationBarTitleDisplayMode(.inline)
+                case .archived:
+                    CKArchivedChatGroupsListView(userId: userId, archivedChats: $vm.archivedChats, viewDidAppear: {
+                        Task {
+                            try await vm.fetchArchivedChats(userId)
+                        }
+                    }, viewDidDisappear: {
+                        vm.resetArchivedChats()
+                    })
+                    .navigationBarTitleDisplayMode(.inline)
                 }
+            }
         }
+        .environment(vm)
         .onAppear {
             if !vm.viewDidLoad {
                 vm.viewDidLoad = true
