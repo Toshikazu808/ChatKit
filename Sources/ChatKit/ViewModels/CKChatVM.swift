@@ -10,6 +10,10 @@ import Observation
 import PhotosUI
 
 public protocol CKChatsApiService: AnyObject, Sendable {
+    /// > Important: Remember to set this variable to `nil` in the `deinit` of the class conforming to `CKChatsApiService`.
+    /// `weak` variables can't be declared in protocols so we need to manage this memory manually to prevent retain cycles.
+    @MainActor var chatsApiSubscriber: (any CKChatsApiSubscriber)? { get set }
+    
     func fetchMessages(for chatGroupId: String, after message: CKMessage?) async throws -> [CKMessage]
     func send(senderId: String, senderName: String, text: String, media: [CKAVSendable], chatGroupId: String, docId: String) async throws
 }
@@ -55,6 +59,7 @@ public protocol CKChatsApiService: AnyObject, Sendable {
         self.db = db
         self.filesManager = filesManager
         self.speechManager = speechManager
+        self.apiService!.chatsApiSubscriber = self
         colorThemeConfig?.setColorTheme()
         NotificationCenter.default.addObserver(
             self,

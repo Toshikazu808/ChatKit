@@ -9,7 +9,8 @@ import SwiftUI
 import Observation
 
 public protocol CKChatGroupsApiService: AnyObject, Sendable {
-    /// > Important: Remember to set this variable to `nil` in the `deinit` of the class conforming to `CKChatGroupsVMApiDelegate`.  `weak` variables can't be declared in protocols so we need to manage this memory manually to prevent retain cycles.
+    /// > Important: Remember to set this variable to `nil` in the `deinit` of the class conforming to `CKChatGroupsApiService`.
+    /// `weak` variables can't be declared in protocols so we need to manage this memory manually to prevent retain cycles.
     @MainActor var chatGroupsApiSubscriber: (any CKChatGroupsApiSubscriber)? { get set }
     
     func fetchInitialChatGroups(userId: String, isOpen: Bool) async throws -> [CKChatGroup]
