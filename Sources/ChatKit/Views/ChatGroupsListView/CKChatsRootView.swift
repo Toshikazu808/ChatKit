@@ -60,6 +60,7 @@ import SwiftData
                         vm.resetArchivedChats()
                     })
                     .navigationBarTitleDisplayMode(.inline)
+                    .navigationTitle("Archived Chats")
                 }
             }
         }
