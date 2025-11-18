@@ -7,16 +7,14 @@
 
 import SwiftUI
 
-struct CKArchivedChatGroupsListView: View {
-    @Environment(CKChatGroupsVM.self) private var vm
-    let userId: String
+public struct CKArchivedChatGroupsListView: View {
+    public let userId: String
+    @Binding public var archivedChats: [CKChatGroup]
+    public let viewDidAppear: () -> Void
+    public let viewDidDisappear: () -> Void
     
-    init(_ userId: String) {
-        self.userId = userId
-    }
-    
-    var body: some View {
-        List(vm.archivedChats) { chatGroup in
+    public var body: some View {
+        List($archivedChats) { $chatGroup in
             NavigationLink(value: CKChatsNavPath.messages(chatGroup)) {
                 CKChatGroupRow(chatGroup: chatGroup)
             }
@@ -24,13 +22,21 @@ struct CKArchivedChatGroupsListView: View {
         }
         .scrollContentBackground(.hidden)
         .listStyle(.plain)
-        .onAppear {
-            Task {
-                try await vm.fetchArchivedChats(userId)
-            }
-        }
-        .onDisappear {
-            vm.resetArchivedChats()
-        }
+        .onAppear { viewDidAppear() }
+        .onDisappear { viewDidDisappear() }
     }
+}
+
+#Preview {
+    @Previewable @State var archivedChats: [CKChatGroup] = [
+        .init(id: "876543210", recentlyModified: .now.minus(.oneHour), members: [
+            .init(fname: "Joe", lname: "Schmoe", id: "abc123"),
+            .init(fname: "Jane", lname: "Brown", id: "123abc")
+        ], recentMessage: .init(from: "Joe Schmoe", message: "This is a test message"), expToken: .empty(), isOpen: false)
+    ]
+    return CKArchivedChatGroupsListView(userId: "abc123", archivedChats: $archivedChats, viewDidAppear: {
+        // vm.fetchArchivedChats(userId)
+    }, viewDidDisappear: {
+        // vm.resetArchivedChats()
+    })
 }

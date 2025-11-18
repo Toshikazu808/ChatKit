@@ -7,11 +7,12 @@
 
 import SwiftUI
 
-struct CKChatGroupsListView: View {
-    @Environment(CKChatGroupsVM.self) private var vm
+public struct CKChatGroupsListView: View {
+    @Binding public var chatGroups: [CKChatGroup]
+    public let didSwipeRow: (CKChatGroup) -> Void
     
-    var body: some View {
-        List(Array(vm.chatGroups), id: \.id) { chatGroup in
+    public var body: some View {
+        List($chatGroups, id: \.id) { $chatGroup in
             NavigationLink(value: CKChatsNavPath.messages(chatGroup)) {
                 CKChatGroupRow(chatGroup: chatGroup)
             }
@@ -19,7 +20,7 @@ struct CKChatGroupsListView: View {
             .swipeActions(edge: .trailing) {
                 Button {
                     withAnimation {
-                        vm.archive(chatGroup)
+                        didSwipeRow(chatGroup)
                     }
                 } label: {
                     Image(systemName: "archivebox")
@@ -30,4 +31,16 @@ struct CKChatGroupsListView: View {
         .scrollContentBackground(.hidden)
         .listStyle(.plain)
     }
+}
+
+#Preview {
+    @Previewable @State var chatGroups: [CKChatGroup] = [
+        .init(id: "876543210", recentlyModified: .now.minus(.halfHour), members: [
+            .init(fname: "Joe", lname: "Schmoe", id: "abc123"),
+            .init(fname: "Jane", lname: "Brown", id: "123abc")
+        ], recentMessage: .init(from: "Joe Schmoe", message: "This is a recent test message"), expToken: .empty(), isOpen: true)
+    ]
+    return CKChatGroupsListView(chatGroups: $chatGroups, didSwipeRow: { _ in
+        // vm.archive(chatGroup)
+    })
 }
