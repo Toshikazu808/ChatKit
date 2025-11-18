@@ -27,6 +27,7 @@ import Foundation
     }
     
     func createNewChatGroup<T: CKChatUser>(user1: T, user2: T, chatGroupComparable: any CKChatGroupComparable, recentMessage: CKRecentMessage) async throws {
+        // do nothing
     }
     
     func fetchChatGroupComparable(for chatGroupId: String) async throws -> any CKChatGroupComparable {
