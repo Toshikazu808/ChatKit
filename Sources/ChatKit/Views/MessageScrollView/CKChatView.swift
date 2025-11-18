@@ -158,21 +158,57 @@ public struct CKChatView: View {
         let container = try ModelContainer(
             for: schema,
             configurations: config)
-        
         let previewGroup = CKChatGroup(
             id: "abc123",
             recentlyModified: .now,
             members: [
-                .init(fname: "Joe", lname: "Schmoe", id: "123abc")
+                .init(
+                    fname: "Joe",
+                    lname: "Schmoe",
+                    id: "123abc")
             ],
-            recentMessage: .init(from: "Joe Schmoe", message: "Test message"),
-            expToken: .init(jwt: "abcxyz", tpc: "xyzabc"),
+            recentMessage: .init(
+                from: "Joe Schmoe",
+                message: "Test message"),
+            expToken: .empty(),
             isOpen: true)
+        let db = MockMessageCacher()
+        let apiService = MockChatsApiService()
+        let vm = CKChatVM(
+            userId: "abc123",
+            db: db,
+            apiService: apiService)
+        vm.messages = [
+            .init(
+                id: "0001",
+                chatGroupId: "123456789",
+                date: .now.minus(.twoHours),
+                senderId: "abc123",
+                senderName: "Joe Schmoe",
+                message: "This is a test static message",
+                expToken: .empty()),
+            .init(
+                id: "0002",
+                chatGroupId: "123456789",
+                date: .now.minus(.twoHours),
+                senderId: "123abc",
+                senderName: "Jane Brown",
+                message: "Hey, this is also a test static message",
+                expToken: .empty()),
+            .init(
+                id: "0003",
+                chatGroupId: "123456789",
+                date: .now.minus(.twoHours),
+                senderId: "abc123",
+                senderName: "Joe Schmoe",
+                message: "Woohoooo!",
+                expToken: .empty())
+        ]
         return CKChatView(
-            userId: "user-123",
-            userName: "Preview User",
+            userId: "abc123",
+            userName: "Joe Schmoe",
             chatGroup: previewGroup,
-            modelContext: container.mainContext,
+            vm: vm,
             viewDidAppear: { _ in },
             viewDidDisappear: { _ in })
     } catch {
