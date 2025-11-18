@@ -9,7 +9,7 @@ import Foundation
 
 /// Use to pass any `CKChatGroupComparable` object that shares an identical `id` variable with a `CKChatGroup`.
 /// Used when deeplinking to chat.
-public protocol CKChatGroupComparable: Identifiable {
+public protocol CKChatGroupComparable: Identifiable, Sendable {
     var id: String { get }
 }
 

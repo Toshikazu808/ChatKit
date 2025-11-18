@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol CKChatUser: Identifiable {
+public protocol CKChatUser: Identifiable, Sendable {
     var id: String { get }
     var fname: String { get set }
     var lname: String { get set }
