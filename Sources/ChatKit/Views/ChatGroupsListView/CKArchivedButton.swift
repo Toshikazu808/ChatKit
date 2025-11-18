@@ -7,14 +7,17 @@
 
 import SwiftUI
 
-struct CKArchivedButton: ToolbarContent {
-    @Environment(CKChatGroupsVM.self) private var vm
+public struct CKArchivedButton: ToolbarContent {
+    @Binding public var navPath: [CKChatsNavPath]
     
-    var body: some ToolbarContent {
-        @Bindable var vm = vm
+    public init(_ navPath: Binding<[CKChatsNavPath]>) {
+        self._navPath = navPath
+    }
+    
+    public var body: some ToolbarContent {
         ToolbarItem(placement: .automatic) {
             Button {
-                vm.navPath.append(.archived)
+                navPath.append(.archived)
             } label: {
                 Image(systemName: "archivebox")
             }
