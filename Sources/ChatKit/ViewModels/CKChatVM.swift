@@ -15,7 +15,7 @@ public protocol CKChatsApiService: AnyObject, Sendable {
     @MainActor var chatsApiSubscriber: (any CKChatsApiSubscriber)? { get set }
     
     func fetchMessages(for chatGroupId: String, after message: CKMessage?) async throws -> [CKMessage]
-    func send(senderId: String, senderName: String, text: String, media: [CKAVSendable], chatGroupId: String, docId: String) async throws
+    @discardableResult func send(senderId: String, senderName: String, text: String, media: [CKAVSendable], chatGroupId: String, docId: String, expToken: CKExpToken?) async throws -> CKRecentMessage
 }
 
 @MainActor public protocol CKChatsApiSubscriber: AnyObject, Sendable {
@@ -116,7 +116,8 @@ public protocol CKChatsApiService: AnyObject, Sendable {
                 text: text,
                 media: selectedMedia,
                 chatGroupId: chatGroupId,
-                docId: id)
+                docId: id,
+                expToken: nil)
             resetMessageData()
         } catch {
             resetMessageData()
