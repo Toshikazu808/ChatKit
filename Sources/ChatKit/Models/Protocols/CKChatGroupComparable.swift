@@ -11,8 +11,10 @@ import Foundation
 /// Used when deeplinking to chat.
 public protocol CKChatGroupComparable: Identifiable, Sendable {
     var id: String { get }
+    var recentlyModified: Date { get }
 }
 
 internal struct MockChatGroupComparable: CKChatGroupComparable {
     let id: String
+    let recentlyModified: Date
 }

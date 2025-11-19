@@ -31,7 +31,7 @@ import Foundation
     }
     
     func fetchChatGroupComparable(for chatGroupId: String) async throws -> any CKChatGroupComparable {
-        return MockChatGroupComparable(id: "123456789")
+        return MockChatGroupComparable(id: "123456789", recentlyModified: .now)
     }
     
     func archive(_ chatGroupComparable: any CKChatGroupComparable) async throws {
