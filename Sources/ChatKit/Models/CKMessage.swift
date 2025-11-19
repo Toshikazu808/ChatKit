@@ -111,6 +111,7 @@ public struct CKMessage: Sendable, Comparable, Identifiable, Hashable {
             Keys.senderName: senderName,
             Keys.message: message,
             Keys.mediaUrls: mediaUrls.map({ $0.toObject() }),
+            Keys.expToken: expToken.toObject()
         ]
     }
     
