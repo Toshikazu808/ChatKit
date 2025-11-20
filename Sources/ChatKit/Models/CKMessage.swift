@@ -19,14 +19,14 @@ public struct CKMessage: Sendable, Comparable, Identifiable, Hashable {
     public let expToken: CKExpToken
     
     public enum Keys {
-        static let id = "id"
-        static let chatGroupId = "chatGroupId"
-        static let date = "date"
-        static let senderId = "senderId"
-        static let senderName = "senderName"
-        static let message = "message"
-        static let mediaUrls = "mediaUrls"
-        static let expToken = "expToken"
+        public static let id = "id"
+        public static let chatGroupId = "chatGroupId"
+        public static let date = "date"
+        public static let senderId = "senderId"
+        public static let senderName = "senderName"
+        public static let message = "message"
+        public static let mediaUrls = "mediaUrls"
+        public static let expToken = "expToken"
     }
     
     public init(id: String, chatGroupId: String, date: Date, senderId: String, senderName: String, message: String, expToken: CKExpToken, mediaUrls: [CKMediaUrl] = []) {

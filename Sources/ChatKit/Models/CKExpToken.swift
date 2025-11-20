@@ -23,9 +23,9 @@ public struct CKExpToken: Sendable {
     }
     
     public enum Keys {
-        static let jwt = "jwt"
-        static let tpc = "tpc"
-        static let expiration = "expiration"
+        public static let jwt = "jwt"
+        public static let tpc = "tpc"
+        public static let expiration = "expiration"
     }
     
     public init(jwt: String, tpc: String, expiration: Date = .epochStart) {

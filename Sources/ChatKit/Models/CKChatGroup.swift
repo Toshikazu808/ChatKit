@@ -20,13 +20,13 @@ public struct CKChatGroup: CKChatGroupComparable, Sendable, Equatable, Hashable 
     }
     
     public enum Keys {
-        static let id = "id"
-        static let memberIDs = "memberIDs"
-        static let members = "members"
-        static let recentMessage = "recentMessage"
-        static let recentlyModified = "recentlyModified"
-        static let expToken = "expToken"
-        static let isOpen = "isOpen"
+        public static let id = "id"
+        public static let memberIDs = "memberIDs"
+        public static let members = "members"
+        public static let recentMessage = "recentMessage"
+        public static let recentlyModified = "recentlyModified"
+        public static let expToken = "expToken"
+        public static let isOpen = "isOpen"
     }
     
     public init(id: String, recentlyModified: Date, members: [CKChatGroupMember], recentMessage: CKRecentMessage, expToken: CKExpToken, isOpen: Bool) {

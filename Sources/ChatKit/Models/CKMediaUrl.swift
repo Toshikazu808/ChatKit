@@ -13,8 +13,8 @@ public struct CKMediaUrl: Sendable, Hashable {
     public let videoUrl: String
     
     public enum DBKeys {
-        static let imgUrl = "imgUrl"
-        static let videoUrl = "videoUrl"
+        public static let imgUrl = "imgUrl"
+        public static let videoUrl = "videoUrl"
     }
     
     public init(imgUrl: String, videoUrl: String = "") {

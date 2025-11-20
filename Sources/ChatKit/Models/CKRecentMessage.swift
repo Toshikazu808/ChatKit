@@ -11,8 +11,9 @@ public struct CKRecentMessage: Sendable {
     public let from: String
     public let message: String
     
-    public enum Keys: String {
-        case from, message
+    public enum Keys {
+        public static let from = "from"
+        public static let message = "message"
     }
     
     public init(from: String, message: String) {
@@ -21,8 +22,8 @@ public struct CKRecentMessage: Sendable {
     }
     
     public init(data: [String: Any]) {
-        from = data[Keys.from.rawValue] as? String ?? ""
-        message = data[Keys.message.rawValue] as? String ?? ""
+        from = data[Keys.from] as? String ?? ""
+        message = data[Keys.message] as? String ?? ""
     }
     
     public static func empty() -> CKRecentMessage {
@@ -31,8 +32,8 @@ public struct CKRecentMessage: Sendable {
     
     public func toObject() -> [String: Any] {
         return [
-            Keys.from.rawValue: from,
-            Keys.message.rawValue: message
+            Keys.from: from,
+            Keys.message: message
         ]
     }
 }
