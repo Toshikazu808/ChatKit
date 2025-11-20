@@ -16,7 +16,7 @@ public protocol CKChatsApiService: AnyObject, Sendable {
     
     func fetchMessages(for chatGroupId: String, after message: CKMessage?) async throws -> [CKMessage]
     @discardableResult func send(senderId: String, senderName: String, text: String, media: [CKAVSendable], chatGroupId: String, docId: String, expToken: CKExpToken?) async throws -> CKMessage
-    @discardableResult func initiateChat(users: [any CKChatUser], chatGroupComparable: any CKChatGroupComparable, media: CKAVSendable?) async throws -> CKMessage
+    @discardableResult func initiateChat<T: CKChatUser>(users: [T], chatGroupComparable: any CKChatGroupComparable, media: CKAVSendable?) async throws -> CKMessage
 }
 
 @MainActor public protocol CKChatsApiSubscriber: AnyObject, Sendable {
