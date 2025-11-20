@@ -68,7 +68,6 @@ public struct CKChatGroup: CKChatGroupComparable, Sendable, Equatable, Hashable 
             self.expToken = try CKExpToken(using: tokenData)
         } else {
             self.expToken = .empty()
-            missing.append(Keys.expToken)
         }
         if let isOpen = data[Keys.isOpen] as? Bool {
             self.isOpen = isOpen
