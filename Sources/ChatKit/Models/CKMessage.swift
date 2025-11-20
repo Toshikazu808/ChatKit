@@ -78,7 +78,15 @@ public struct CKMessage: Sendable, Comparable, Identifiable, Hashable {
             self.message = ""
         }
         if let media = data[Keys.mediaUrls] as? [[String: Any]] {
-            self.mediaUrls = media.map({ CKMediaUrl(data: $0) })
+            do {
+                let mediaUrls = try media.map({
+                    try CKMediaUrl(data: $0)
+                })
+                self.mediaUrls = mediaUrls
+            } catch {
+                self.mediaUrls = []
+                missing.append(Keys.mediaUrls)
+            }
         } else {
             self.mediaUrls = []
         }
