@@ -8,13 +8,23 @@
 import Foundation
 import SwiftData
 
-public struct CKMediaUrl: Sendable, Hashable {
+public struct CKMediaUrl: Codable, Sendable, Hashable {
     public let imgUrl: String
     public let videoUrl: String
     
     public enum Keys {
         public static let imgUrl = "imgUrl"
         public static let videoUrl = "videoUrl"
+    }
+    
+    public enum CodingKeys: String, CodingKey {
+        case imgUrl, videoUrl
+    }
+    
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.imgUrl = try container.decodeIfPresent(String.self, forKey: .imgUrl) ?? ""
+        self.videoUrl = try container.decodeIfPresent(String.self, forKey: .videoUrl) ?? ""
     }
     
     public init(imgUrl: String, videoUrl: String = "") {

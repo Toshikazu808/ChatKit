@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-public struct CKMessage: Sendable, Comparable, Identifiable, Hashable {
+public struct CKMessage: Codable, Sendable, Comparable, Identifiable, Hashable {
     public let id: String
     public let chatGroupId: String
     public let date: Date
@@ -27,6 +27,34 @@ public struct CKMessage: Sendable, Comparable, Identifiable, Hashable {
         public static let message = "message"
         public static let mediaUrls = "mediaUrls"
         public static let expToken = "expToken"
+    }
+    
+    public enum CodingKeys: String, CodingKey {
+        case id, chatGroupId, date, senderId, senderName, message, mediaUrls
+        case expToken = "token"
+    }
+    
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.chatGroupId = try container.decode(String.self, forKey: .chatGroupId)
+        do {
+            self.date = try container.decode(Date.self, forKey: .date)
+        } catch {
+            let isoStr = try container.decode(String.self, forKey: .date)
+            let isoFormatter = ISO8601DateFormatter()
+            isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+            if let date = isoFormatter.date(from: isoStr) {
+                self.date = date
+            } else {
+                throw Errors.keysNotFound("CKMessage", [Keys.date])
+            }
+        }
+        self.senderId = try container.decode(String.self, forKey: .senderId)
+        self.senderName = try container.decode(String.self, forKey: .senderName)
+        self.message = try container.decode(String.self, forKey: .message)
+        self.mediaUrls = try container.decodeIfPresent([CKMediaUrl].self, forKey: .mediaUrls) ?? []
+        self.expToken = try container.decodeIfPresent(CKExpToken.self, forKey: .expToken) ?? .empty()
     }
     
     public init(id: String, chatGroupId: String, date: Date, senderId: String, senderName: String, message: String, expToken: CKExpToken, mediaUrls: [CKMediaUrl] = []) {

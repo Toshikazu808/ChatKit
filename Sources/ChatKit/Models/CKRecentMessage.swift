@@ -7,13 +7,23 @@
 
 import Foundation
 
-public struct CKRecentMessage: Sendable {
+public struct CKRecentMessage: Codable, Sendable {
     public let from: String
     public let message: String
     
     public enum Keys {
         public static let from = "from"
         public static let message = "message"
+    }
+    
+    public enum CodingKeys: String, CodingKey {
+        case from, message
+    }
+    
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.from = try container.decode(String.self, forKey: .from)
+        self.message = try container.decode(String.self, forKey: .message)
     }
     
     public init(from: String, message: String) {

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-public struct CKExpToken: Sendable {
+public struct CKExpToken: Codable, Sendable {
     public let jwt: String
     public let tpc: String
     public let expiration: Date
@@ -26,6 +26,28 @@ public struct CKExpToken: Sendable {
         public static let jwt = "jwt"
         public static let tpc = "tpc"
         public static let expiration = "expiration"
+    }
+    
+    public enum CodingKeys: String, CodingKey {
+        case jwt, tpc, expiration
+    }
+    
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.jwt = try container.decode(String.self, forKey: .jwt)
+        self.tpc = try container.decode(String.self, forKey: .tpc)
+        do {
+            self.expiration = try container.decode(Date.self, forKey: .expiration)
+        } catch {
+            let isoStr = try container.decode(String.self, forKey: .expiration)
+            let isoFormatter = ISO8601DateFormatter()
+            isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+            if let date = isoFormatter.date(from: isoStr) {
+                self.expiration = date
+            } else {
+                throw Errors.keysNotFound("CKExpToken", [Keys.expiration])
+            }
+        }
     }
     
     public init(jwt: String, tpc: String, expiration: Date = .epochStart) {

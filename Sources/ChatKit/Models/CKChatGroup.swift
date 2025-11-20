@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct CKChatGroup: CKChatGroupComparable, Sendable, Equatable, Hashable {
+public struct CKChatGroup: CKChatGroupComparable, Codable, Sendable, Equatable, Hashable {
     public let id: String
     public let recentlyModified: Date
     public let members: [CKChatGroupMember]
@@ -27,6 +27,32 @@ public struct CKChatGroup: CKChatGroupComparable, Sendable, Equatable, Hashable 
         public static let recentlyModified = "recentlyModified"
         public static let expToken = "expToken"
         public static let isOpen = "isOpen"
+    }
+    
+    public enum CodingKeys: String, CodingKey {
+        case id, members, recentMessage, recentlyModified, isOpen
+        case expToken = "token"
+    }
+    
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        do {
+            self.recentlyModified = try container.decode(Date.self, forKey: .recentlyModified)
+        } catch {
+            let isoStr = try container.decode(String.self, forKey: .recentlyModified)
+            let isoFormatter = ISO8601DateFormatter()
+            isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+            if let date = isoFormatter.date(from: isoStr) {
+                self.recentlyModified = date
+            } else {
+                throw Errors.keysNotFound("CKChatGroup", [Keys.recentlyModified])
+            }
+        }
+        self.members = try container.decode([CKChatGroupMember].self, forKey: .members)
+        self.recentMessage = try container.decode(CKRecentMessage.self, forKey: .recentMessage)
+        self.expToken = try container.decodeIfPresent(CKExpToken.self, forKey: .expToken) ?? .empty()
+        self.isOpen = try container.decode(Bool.self, forKey: .isOpen)
     }
     
     public init(id: String, recentlyModified: Date, members: [CKChatGroupMember], recentMessage: CKRecentMessage, expToken: CKExpToken, isOpen: Bool) {
