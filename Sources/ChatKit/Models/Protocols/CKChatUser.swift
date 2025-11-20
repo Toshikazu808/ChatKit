@@ -12,3 +12,9 @@ public protocol CKChatUser: Identifiable, Sendable {
     var fname: String { get set }
     var lname: String { get set }
 }
+
+public extension CKChatUser {
+    var fullName: String {
+        "\(fname) \(lname)"
+    }
+}
