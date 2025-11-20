@@ -65,7 +65,8 @@ public struct CKChatGroup: CKChatGroupComparable, Sendable, Equatable, Hashable 
             missing.append(Keys.recentMessage)
         }
         if let tokenData = data[Keys.expToken] as? [String: Any] {
-            self.expToken = try CKExpToken(using: tokenData)
+            let token = try? CKExpToken(using: tokenData)
+            self.expToken = token ?? .empty()
         } else {
             self.expToken = .empty()
         }
