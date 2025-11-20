@@ -24,7 +24,7 @@ public protocol CKChatGroupsApiService: AnyObject, Sendable {
 }
 
 @Observable @MainActor public final class CKChatGroupsVM {
-    public private(set) weak var apiService: (any CKChatGroupsApiService)?
+    public let apiService: any CKChatGroupsApiService
     public let colorThemeConfig: CKColorThemeConfig?
     public var viewDidLoad = false
     public var navPath: [CKChatsNavPath] = []
@@ -41,12 +41,12 @@ public protocol CKChatGroupsApiService: AnyObject, Sendable {
     public init(apiService: any CKChatGroupsApiService, colorThemeConfig: CKColorThemeConfig? = nil) {
         self.apiService = apiService
         self.colorThemeConfig = colorThemeConfig
-        self.apiService!.chatGroupsApiSubscriber = self
+        self.apiService.chatGroupsApiSubscriber = self
         colorThemeConfig?.setColorTheme()
     }
     
     internal func fetchChats(_ userId: String) async throws {
-        guard let apiService, archivedChats.isEmpty else { return }
+        guard archivedChats.isEmpty else { return }
         isLoading = true
         chatGroups = try await apiService.fetchInitialChatGroups(userId: userId, isOpen: true)
         isLoading = false
@@ -54,12 +54,11 @@ public protocol CKChatGroupsApiService: AnyObject, Sendable {
     }
     
     internal func fetchChatGroupComparable(for chatGroupId: String) async throws {
-        guard let apiService else { return }
         chatGroupComparable = try await apiService.fetchChatGroupComparable(for: chatGroupId)
     }
     
     internal func fetchArchivedChats(_ userId: String) async throws {
-        guard let apiService, archivedChats.isEmpty else { return }
+        guard archivedChats.isEmpty else { return }
         isLoading = true
         archivedChats = try await apiService.fetchInitialChatGroups(userId: userId, isOpen: false)
         isLoading = false
@@ -94,7 +93,7 @@ public protocol CKChatGroupsApiService: AnyObject, Sendable {
     internal func archive(_ chatGroup: CKChatGroup) {
         chatGroups.removeAll(where: { $0.id == chatGroup.id })
         Task {
-            try await apiService?.archive(chatGroup)
+            try await apiService.archive(chatGroup)
         }
     }
     

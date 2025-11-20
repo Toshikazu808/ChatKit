@@ -24,7 +24,7 @@ public protocol CKChatsApiService: AnyObject, Sendable {
 }
 
 @Observable @MainActor public final class CKChatVM {
-    public private(set) weak var apiService: (any CKChatsApiService)?
+    public let apiService: any CKChatsApiService
     
     public let userId: String
     public let db: any CKMessageCacherProtocol
@@ -60,7 +60,7 @@ public protocol CKChatsApiService: AnyObject, Sendable {
         self.db = db
         self.filesManager = filesManager
         self.speechManager = speechManager
-        self.apiService!.chatsApiSubscriber = self
+        self.apiService.chatsApiSubscriber = self
         colorThemeConfig?.setColorTheme()
         NotificationCenter.default.addObserver(
             self,
@@ -78,7 +78,6 @@ public protocol CKChatsApiService: AnyObject, Sendable {
     }
     
     internal func fetchMessages(for chatGroupId: String) async throws {
-        guard let apiService else { return }
         tempMessagesCache = db.fetchCachedMessage(for: chatGroupId)
         let fetchedMessages = try await apiService.fetchMessages(
             for: chatGroupId,
@@ -102,7 +101,7 @@ public protocol CKChatsApiService: AnyObject, Sendable {
     }
     
     internal func sendMessage(senderId: String, senderName: String, chatGroupId: String, id: String = UUID().uuidString) async throws {
-        guard let apiService, !text.isEmpty || !selectedMedia.isEmpty else { return }
+        guard !text.isEmpty || !selectedMedia.isEmpty else { return }
         do {
             let tempMessage = filesManager.cache(
                 media: selectedMedia,
