@@ -20,6 +20,13 @@ import SwiftUI
     public private(set) var silver: Color?
     public private(set) var lightNavy: Color?
     
+    public init(babyBlue: Color? = nil, lightGray: Color? = nil, silver: Color? = nil, lightNavy: Color? = nil) {
+        self.babyBlue = babyBlue
+        self.lightGray = lightGray
+        self.silver = silver
+        self.lightNavy = lightNavy
+    }
+    
     public func setColorTheme() {
         if let babyBlue {
             Theme.babyBlue = babyBlue
