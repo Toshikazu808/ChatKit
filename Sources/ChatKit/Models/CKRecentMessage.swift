@@ -21,9 +21,23 @@ public struct CKRecentMessage: Sendable {
         self.message = message
     }
     
-    public init(data: [String: Any]) {
-        from = data[Keys.from] as? String ?? ""
-        message = data[Keys.message] as? String ?? ""
+    public init(data: [String: Any]) throws {
+        var missing: [String] = []
+        if let from = data[Keys.from] as? String {
+            self.from = from
+        } else {
+            self.from = ""
+            missing.append(Keys.from)
+        }
+        if let message = data[Keys.message] as? String {
+            self.message = message
+        } else {
+            self.message = ""
+            missing.append(Keys.message)
+        }
+        if !missing.isEmpty {
+            throw Errors.keysNotFound("CKRecentMessage", missing)
+        }
     }
     
     public static func empty() -> CKRecentMessage {

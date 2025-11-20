@@ -53,16 +53,24 @@ public struct CKChatGroup: CKChatGroupComparable, Sendable, Equatable, Hashable 
             missing.append(Keys.recentlyModified)
         }
         if let chatMembers = data[Keys.members] as? [[String: Any]] {
-            self.members = chatMembers.map({ CKChatGroupMember(data: $0) })
+            do {
+                let members = try chatMembers.map({
+                    try CKChatGroupMember(data: $0)
+                })
+                self.members = members
+            } catch {
+                self.members = []
+                missing.append(Keys.members)
+            }
         } else {
             self.members = []
             missing.append(Keys.members)
         }
         if let recent = data[Keys.recentMessage] as? [String: Any] {
-            self.recentMessage = CKRecentMessage(data: recent)
+            let recentMessage = try? CKRecentMessage(data: recent)
+            self.recentMessage = recentMessage ?? .empty()
         } else {
-            self.recentMessage = CKRecentMessage(data: [:])
-            missing.append(Keys.recentMessage)
+            self.recentMessage = .empty()
         }
         if let tokenData = data[Keys.expToken] as? [String: Any] {
             let token = try? CKExpToken(using: tokenData)

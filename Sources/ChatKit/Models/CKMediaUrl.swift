@@ -12,7 +12,7 @@ public struct CKMediaUrl: Sendable, Hashable {
     public let imgUrl: String
     public let videoUrl: String
     
-    public enum DBKeys {
+    public enum Keys {
         public static let imgUrl = "imgUrl"
         public static let videoUrl = "videoUrl"
     }
@@ -22,9 +22,23 @@ public struct CKMediaUrl: Sendable, Hashable {
         self.videoUrl = videoUrl
     }
     
-    public init(data: [String: Any]) {
-        self.imgUrl = data[DBKeys.imgUrl] as? String ?? ""
-        self.videoUrl = data[DBKeys.videoUrl] as? String ?? ""
+    public init(data: [String: Any]) throws {
+        var missing: [String] = []
+        if let imgUrl = data[Keys.imgUrl] as? String {
+            self.imgUrl = imgUrl
+        } else {
+            self.imgUrl = ""
+            missing.append(Keys.imgUrl)
+        }
+        if let videoUrl = data[Keys.videoUrl] as? String {
+            self.videoUrl = videoUrl
+        } else {
+            self.videoUrl = ""
+            missing.append(Keys.videoUrl)
+        }
+        if !missing.isEmpty {
+            throw Errors.keysNotFound("CKMediaUrl", missing)
+        }
     }
     
     public init(cachedMediaUrl: CKCachedMediaUrl) {
@@ -34,8 +48,8 @@ public struct CKMediaUrl: Sendable, Hashable {
     
     public func toObject() -> [String: Any] {
         return [
-            DBKeys.imgUrl: imgUrl,
-            DBKeys.videoUrl: videoUrl
+            Keys.imgUrl: imgUrl,
+            Keys.videoUrl: videoUrl
         ]
     }
     

@@ -16,8 +16,10 @@ public struct CKChatGroupMember: Sendable, Hashable {
         return "\(fname) \(lname)"
     }
     
-    public enum Keys: String {
-        case fname, lname, id
+    public enum Keys {
+        public static let fname = "fname"
+        public static let lname = "lname"
+        public static let id = "id"
     }
     
     public init(fname: String, lname: String, id: String) {
@@ -26,17 +28,36 @@ public struct CKChatGroupMember: Sendable, Hashable {
         self.id = id
     }
     
-    public init(data: [String: Any]) {
-        fname = data[Keys.fname.rawValue] as? String ?? ""
-        lname = data[Keys.lname.rawValue] as? String ?? ""
-        id = data[Keys.id.rawValue] as? String ?? ""
+    public init(data: [String: Any]) throws {
+        var missing: [String] = []
+        if let fname = data[Keys.fname] as? String {
+            self.fname = fname
+        } else {
+            self.fname = ""
+            missing.append(Keys.fname)
+        }
+        if let lname = data[Keys.lname] as? String {
+            self.lname = lname
+        } else {
+            self.lname = ""
+            missing.append(Keys.lname)
+        }
+        if let id = data[Keys.id] as? String {
+            self.id = id
+        } else {
+            self.id = ""
+            missing.append(Keys.id)
+        }
+        if !missing.isEmpty {
+            throw Errors.keysNotFound("CKChatGroupMember", missing)
+        }
     }
     
     public func toObject() -> [String: Any] {
         return [
-            Keys.id.rawValue: id,
-            Keys.fname.rawValue: fname,
-            Keys.lname.rawValue: lname
+            Keys.id: id,
+            Keys.fname: fname,
+            Keys.lname: lname
         ]
     }
 }
