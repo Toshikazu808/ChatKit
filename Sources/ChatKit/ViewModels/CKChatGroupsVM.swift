@@ -38,7 +38,7 @@ public protocol CKChatGroupsApiService: AnyObject, Sendable {
     public var chatGroupComparable: (any CKChatGroupComparable)?
     public internal(set) var shouldOpenChat = false
     
-    public init(_ apiService: any CKChatGroupsApiService, colorThemeConfig: CKColorThemeConfig? = nil) {
+    public init(apiService: any CKChatGroupsApiService, colorThemeConfig: CKColorThemeConfig? = nil) {
         self.apiService = apiService
         self.colorThemeConfig = colorThemeConfig
         self.apiService!.chatGroupsApiSubscriber = self
