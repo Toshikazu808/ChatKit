@@ -18,7 +18,11 @@ import Foundation
         ]
     }
     
-    func send(senderId: String, senderName: String, text: String, media: [CKAVSendable], chatGroupId: String, docId: String) async throws {
-        // do nothing
+    @discardableResult func send(senderId: String, senderName: String, text: String, media: [CKAVSendable], chatGroupId: String, docId: String, expToken: CKExpToken?) async throws -> CKMessage {
+        return .empty()
+    }
+    
+    @discardableResult func initiateChat<T: CKChatUser>(users: [T], chatGroupComparable: any CKChatGroupComparable, media: CKAVSendable?) async throws -> CKMessage {
+        return .empty()
     }
 }
