@@ -29,7 +29,7 @@ public struct CKMessageImageCarouselView: View {
                                     Image(systemName: "play.circle")
                                         .resizable()
                                         .scaledToFit()
-                                        .foregroundStyle(Theme.silver)
+                                        .foregroundStyle(Theme.lightGray)
                                         .frame(width: h / 2, height: h / 2)
                                 }
                             }
