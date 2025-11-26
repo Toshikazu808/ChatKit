@@ -17,7 +17,7 @@ public struct CKChatView: View {
     @Binding public var navPath: [CKChatsNavPath]
     public let viewDidAppear: ((CKChatGroup) -> Void)?
     public let viewDidDisappear: ((CKChatGroup) -> Void)?
-    public let decorationView: AnyView
+    public let decorationView: () -> AnyView
     
     private let bottomButtonPadding: CGFloat = 3
     private let buttonSize: CGFloat = 25
@@ -28,7 +28,7 @@ public struct CKChatView: View {
     @FocusState var isKeyboardFocused: Field?
     
     /// Used internally when initializing from a `CKChatsRootView`.
-    public init(userId: String, userName: String, chatGroup: CKChatGroup, modelContext: ModelContext, apiService: any CKChatsApiService, viewDidAppear: ((CKChatGroup) -> Void)? = nil, viewDidDisappear: ((CKChatGroup) -> Void)? = nil, navPath: Binding<[CKChatsNavPath]>, decorationView: AnyView) {
+    public init(userId: String, userName: String, chatGroup: CKChatGroup, modelContext: ModelContext, apiService: any CKChatsApiService, viewDidAppear: ((CKChatGroup) -> Void)? = nil, viewDidDisappear: ((CKChatGroup) -> Void)? = nil, navPath: Binding<[CKChatsNavPath]>, @ViewBuilder decorationView: @escaping () -> some View = { EmptyView() }) {
         self.userId = userId
         self.userName = userName
         self.chatGroup = chatGroup
@@ -38,11 +38,11 @@ public struct CKChatView: View {
         self.viewDidAppear = viewDidAppear
         self.viewDidDisappear = viewDidDisappear
         self._navPath = navPath
-        self.decorationView = decorationView
+        self.decorationView = { AnyView(decorationView()) }
     }
     
     /// Optional `init` if the `CKChatView` does NOT need to be embedded in a `CKChatsRootView`.
-    public init(userId: String, userName: String, chatGroup: CKChatGroup, vm: CKChatVM, viewDidAppear: @escaping (CKChatGroup) -> Void, viewDidDisappear: @escaping (CKChatGroup) -> Void, navPath: Binding<[CKChatsNavPath]> = .constant([]), @ViewBuilder decoration: () -> some View = { EmptyView() }) {
+    public init(userId: String, userName: String, chatGroup: CKChatGroup, vm: CKChatVM, viewDidAppear: @escaping (CKChatGroup) -> Void, viewDidDisappear: @escaping (CKChatGroup) -> Void, navPath: Binding<[CKChatsNavPath]> = .constant([]), @ViewBuilder decoration: @escaping () -> some View = { EmptyView() }) {
         self.userId = userId
         self.userName = userName
         self.chatGroup = chatGroup
@@ -50,7 +50,7 @@ public struct CKChatView: View {
         self.viewDidAppear = viewDidAppear
         self.viewDidDisappear = viewDidDisappear
         self._navPath = navPath
-        self.decorationView = AnyView(decoration())
+        self.decorationView = { AnyView(decoration()) }
     }
     
     public var body: some View {
@@ -123,7 +123,7 @@ public struct CKChatView: View {
                 }
             }
             
-            decorationView
+            decorationView()
         }
         .onAppear {
             Task {
