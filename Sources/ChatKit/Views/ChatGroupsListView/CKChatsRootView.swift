@@ -15,13 +15,15 @@ import SwiftData
     public let userId: String
     public let userName: String
     public let chatsApiService: any CKChatsApiService
+    public let decorationView: AnyView
     
-    public init(userId: String, userName: String, chatGroupsApiService: any CKChatGroupsApiService, chatsApiService: any CKChatsApiService, colorThemeConfig: CKColorThemeConfig? = nil) {
+    public init(userId: String, userName: String, chatGroupsApiService: any CKChatGroupsApiService, chatsApiService: any CKChatsApiService, colorThemeConfig: CKColorThemeConfig? = nil, @ViewBuilder decorationView: () -> some View = { EmptyView() }) {
         self.userId = userId
         self.userName = userName
         let vm = CKChatGroupsVM(apiService: chatGroupsApiService, colorThemeConfig: colorThemeConfig)
         self._vm = State(wrappedValue: vm)
         self.chatsApiService = chatsApiService
+        self.decorationView = AnyView(decorationView())
     }
     
     public var body: some View {
@@ -44,7 +46,7 @@ import SwiftData
                         }
                     }, viewDidDisappear: { _ in
                         vm.chatGroupComparable = nil
-                    }, navPath: $vm.navPath)
+                    }, navPath: $vm.navPath, decorationView: decorationView)
                     .navigationBarTitleDisplayMode(.inline)
                 case .mediaView(let media):
                     CKLocalMediaCarouselView(media: media)
